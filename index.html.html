@@ -6,11 +6,6 @@
 
   <title>PollSpace - Create & Share Polls</title>
 
-  <meta
-    name="description"
-    content="Create polls, share them with anyone and see live results."
-  >
-
   <style>
     * {
       box-sizing: border-box;
@@ -18,669 +13,471 @@
       padding: 0;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       font-family: Arial, Helvetica, sans-serif;
+      background: #0878d1;
+      color: #ffffff;
       min-height: 100vh;
-      background:
-        linear-gradient(135deg, #005bea 0%, #00c6fb 100%);
-      color: #172033;
     }
 
     button,
-    input,
-    select {
+    input {
       font-family: inherit;
     }
 
-    button {
-      cursor: pointer;
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
+    /* HEADER */
     header {
       width: 100%;
       background: #ffffff;
-      box-shadow: 0 3px 18px rgba(0, 0, 0, 0.12);
+      color: #0878d1;
+      padding: 14px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.15);
       position: sticky;
       top: 0;
-      z-index: 1000;
-    }
-
-    .header-inner {
-      max-width: 1150px;
-      margin: auto;
-      padding: 15px 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+      z-index: 100;
     }
 
     .logo {
-      color: #16a34a;
-      font-size: 28px;
-      font-weight: 900;
-      text-decoration: none;
-      letter-spacing: -1px;
+      font-size: 25px;
+      font-weight: 800;
+      color: #13a83b;
     }
 
-    .header-actions {
+    .header-buttons {
       display: flex;
-      align-items: center;
       gap: 10px;
     }
 
     .header-btn {
       border: none;
-      padding: 11px 17px;
-      border-radius: 10px;
-      font-weight: 700;
-      transition: 0.2s;
-    }
-
-    .create-header-btn {
-      background: #facc15;
-      color: #111827;
-    }
-
-    .language-btn {
-      background: #2563eb;
-      color: white;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      background: #ffd400;
+      color: #111;
     }
 
     .header-btn:hover {
-      transform: translateY(-1px);
-      opacity: 0.92;
+      opacity: 0.9;
     }
 
-    .language-wrapper {
-      position: relative;
-    }
-
-    .language-menu {
-      display: none;
-      position: absolute;
-      right: 0;
-      top: 48px;
-      background: white;
-      width: 180px;
-      border-radius: 12px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.18);
-      overflow: hidden;
-      z-index: 2000;
-    }
-
-    .language-menu.show {
-      display: block;
-    }
-
-    .language-option {
+    /* MAIN */
+    .container {
       width: 100%;
-      padding: 12px 15px;
-      border: none;
-      background: white;
-      text-align: left;
-      font-weight: 600;
-      color: #1f2937;
+      max-width: 850px;
+      margin: 35px auto;
+      padding: 0 16px;
     }
-
-    .language-option:hover {
-      background: #eff6ff;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
 
     .hero {
-      max-width: 1000px;
-      margin: auto;
-      padding: 75px 20px 45px;
       text-align: center;
-      color: white;
+      margin-bottom: 25px;
     }
 
     .hero h1 {
-      font-size: clamp(38px, 7vw, 70px);
-      line-height: 1.05;
-      font-weight: 900;
-      margin-bottom: 18px;
+      font-size: 36px;
+      margin-bottom: 10px;
     }
 
     .hero p {
-      font-size: 19px;
-      line-height: 1.6;
-      max-width: 700px;
-      margin: auto;
+      font-size: 17px;
       opacity: 0.95;
     }
 
-    /* =========================
-       MAIN
-    ========================= */
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 20px;
-    }
-
+    /* CARD */
     .card {
-      background: white;
-      border-radius: 22px;
-      padding: 28px;
-      margin-bottom: 28px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.16);
+      background: #ffffff;
+      color: #222;
+      border-radius: 16px;
+      padding: 25px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.18);
+      margin-bottom: 25px;
     }
 
     .card h2 {
-      font-size: 28px;
-      margin-bottom: 20px;
-      color: #172033;
+      color: #0878d1;
+      margin-bottom: 18px;
     }
 
-    /* =========================
-       POLL BUILDER
-    ========================= */
-
-    .field-label {
+    label {
       display: block;
-      margin-bottom: 8px;
-      font-weight: 800;
-      color: #1f2937;
+      font-weight: bold;
+      margin-bottom: 7px;
     }
 
-    .question-input,
-    .option-input {
+    input[type="text"] {
       width: 100%;
-      border: 2px solid #dbeafe;
-      border-radius: 12px;
-      padding: 14px 15px;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 16px;
       outline: none;
-      transition: 0.2s;
+      margin-bottom: 16px;
     }
 
-    .question-input:focus,
-    .option-input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
-    }
-
-    .question-input {
-      margin-bottom: 22px;
-    }
-
-    .options-area {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    input[type="text"]:focus {
+      border-color: #0878d1;
     }
 
     .option-row {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .option-row input {
+      flex: 1;
+      margin-bottom: 0;
     }
 
     .remove-option {
-      width: 44px;
-      height: 44px;
+      width: 45px;
       border: none;
-      border-radius: 10px;
-      background: #fee2e2;
-      color: #dc2626;
+      border-radius: 8px;
+      background: #ef4444;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .add-option {
+      width: 100%;
+      padding: 12px;
+      border: 2px dashed #0878d1;
+      background: #eef8ff;
+      color: #0878d1;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin: 8px 0 18px;
+    }
+
+    .create-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 9px;
+      background: #13a83b;
+      color: white;
       font-size: 18px;
-      font-weight: 900;
-      flex-shrink: 0;
+      font-weight: bold;
+      cursor: pointer;
     }
 
-    .builder-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-top: 20px;
+    .create-btn:hover {
+      background: #0c8c30;
     }
 
-    .primary-btn {
-      border: none;
-      background: #facc15;
-      color: #111827;
-      padding: 13px 20px;
-      border-radius: 11px;
-      font-size: 16px;
-      font-weight: 800;
-      transition: 0.2s;
-    }
-
-    .primary-btn:hover {
-      transform: translateY(-1px);
-      background: #fde047;
-    }
-
-    .secondary-btn {
-      border: none;
-      background: #2563eb;
-      color: white;
-      padding: 13px 20px;
-      border-radius: 11px;
-      font-size: 16px;
-      font-weight: 800;
-      transition: 0.2s;
-    }
-
-    .secondary-btn:hover {
-      background: #1d4ed8;
-    }
-
-    .danger-btn {
-      border: none;
-      background: #dc2626;
-      color: white;
-      padding: 13px 20px;
-      border-radius: 11px;
-      font-weight: 800;
-    }
-
-    /* =========================
-       ADVERTISEMENT
-    ========================= */
-
-    .ad-box {
-      min-height: 110px;
-      background: rgba(255, 255, 255, 0.93);
-      border: 2px dashed rgba(255, 255, 255, 0.9);
-      border-radius: 18px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      color: #64748b;
-      font-weight: 700;
-
-      margin: 30px auto;
-      max-width: 970px;
-    }
-
-    /* =========================
-       POLL VIEW
-    ========================= */
-
+    /* POLL */
     .poll-question {
-      font-size: 28px;
-      font-weight: 900;
-      margin-bottom: 22px;
-      line-height: 1.3;
-    }
-
-    .vote-options {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+      font-size: 25px;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #0878d1;
     }
 
     .vote-option {
       width: 100%;
-      border: 2px solid #dbeafe;
-      background: #f8fbff;
       padding: 15px;
-      border-radius: 13px;
-      text-align: left;
+      margin-bottom: 12px;
+      border: 2px solid #0878d1;
+      background: #ffffff;
+      color: #0878d1;
+      border-radius: 9px;
+      cursor: pointer;
       font-size: 16px;
-      font-weight: 700;
-      color: #1e293b;
-      transition: 0.2s;
+      text-align: left;
+      font-weight: bold;
     }
 
     .vote-option:hover {
-      border-color: #2563eb;
-      background: #eff6ff;
-      transform: translateX(2px);
+      background: #eaf6ff;
     }
 
     .vote-option.selected {
-      border-color: #16a34a;
-      background: #f0fdf4;
+      background: #0878d1;
+      color: white;
     }
 
-    .vote-option:disabled {
+    .vote-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 9px;
+      background: #ffd400;
+      color: #111;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .vote-btn:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
-      opacity: 0.8;
     }
 
-    /* =========================
-       RESULTS
-    ========================= */
-
-    .result-item {
-      margin-bottom: 20px;
+    /* RESULTS */
+    .result-row {
+      margin-bottom: 17px;
     }
 
     .result-top {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 7px;
-      font-weight: 800;
-    }
-
-    .result-label {
-      overflow-wrap: anywhere;
-    }
-
-    .result-count {
-      white-space: nowrap;
-      color: #2563eb;
+      margin-bottom: 6px;
+      font-weight: bold;
     }
 
     .progress {
-      width: 100%;
-      height: 15px;
+      height: 22px;
       background: #e5e7eb;
-      border-radius: 999px;
+      border-radius: 20px;
       overflow: hidden;
     }
 
     .progress-bar {
       height: 100%;
+      background: #13a83b;
       width: 0%;
-      background: #2563eb;
-      border-radius: 999px;
-      transition: width 0.5s ease;
+      transition: width 0.4s ease;
     }
 
     .total-votes {
-      margin-top: 20px;
-      padding: 15px;
-      background: #eff6ff;
-      border-radius: 12px;
-      font-weight: 800;
       text-align: center;
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #0878d1;
     }
 
-    /* =========================
-       SHARE
-    ========================= */
-
-    .share-section {
-      margin-top: 25px;
-      padding-top: 22px;
-      border-top: 2px solid #eef2f7;
+    /* SHARE */
+    .share-box {
+      background: #f7faff;
+      border: 2px solid #dbeeff;
+      padding: 18px;
+      border-radius: 12px;
+      margin-top: 22px;
     }
 
-    .share-section h3 {
-      margin-bottom: 14px;
-      font-size: 21px;
+    .share-box h3 {
+      color: #0878d1;
+      margin-bottom: 12px;
+    }
+
+    .share-link {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 15px;
+    }
+
+    .share-link input {
+      flex: 1;
+      margin: 0;
+      background: #fff;
+    }
+
+    .copy-btn {
+      border: none;
+      padding: 0 16px;
+      border-radius: 8px;
+      background: #0878d1;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
     }
 
     .share-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
     }
 
     .share-btn {
       border: none;
-      border-radius: 10px;
-      padding: 11px 15px;
-      font-weight: 800;
+      padding: 12px 8px;
+      border-radius: 8px;
       color: white;
+      cursor: pointer;
+      font-weight: bold;
     }
 
-    .whatsapp {
-      background: #25d366;
-    }
+    .whatsapp { background: #25D366; }
+    .telegram { background: #229ED9; }
+    .facebook { background: #1877F2; }
+    .x { background: #000000; }
+    .instagram { background: #E1306C; }
+    .tiktok { background: #111111; }
+    .copy-link { background: #0878d1; }
 
-    .telegram {
-      background: #229ed9;
-    }
-
-    .facebook {
-      background: #1877f2;
-    }
-
-    .twitter {
-      background: #111827;
-    }
-
-    .instagram {
-      background: #e1306c;
-    }
-
-    .tiktok {
-      background: #111111;
-    }
-
-    .copy {
-      background: #16a34a;
-    }
-
-    .share-link-box {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-    }
-
-    .share-link-input {
-      flex: 1;
-      min-width: 0;
-      padding: 12px;
-      border: 2px solid #dbeafe;
-      border-radius: 10px;
-      background: #f8fafc;
-    }
-
-    /* =========================
-       STATUS
-    ========================= */
-
+    /* STATUS */
     .status {
       display: none;
-      padding: 14px 16px;
-      border-radius: 11px;
-      margin-bottom: 18px;
-      font-weight: 700;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-weight: bold;
+      text-align: center;
     }
 
-    .status.show {
-      display: block;
-    }
-
-    .status.success {
+    .success {
       background: #dcfce7;
       color: #166534;
     }
 
-    .status.error {
+    .error {
       background: #fee2e2;
       color: #991b1b;
     }
 
-    .status.info {
-      background: #dbeafe;
-      color: #1e40af;
-    }
-
     .loading {
-      text-align: center;
-      padding: 30px;
-      font-weight: 800;
+      background: #e0f2fe;
+      color: #075985;
     }
 
-    /* =========================
-       MODAL
-    ========================= */
+    /* AD */
+    .ad-box {
+      min-height: 90px;
+      background: rgba(255,255,255,0.12);
+      border: 1px dashed rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 25px 0;
+      border-radius: 10px;
+      font-size: 14px;
+    }
 
+    /* FOOTER */
+    footer {
+      margin-top: 45px;
+      background: #075da3;
+      padding: 25px 15px;
+      text-align: center;
+    }
+
+    footer a {
+      color: white;
+      margin: 0 8px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    footer p {
+      margin-top: 12px;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+
+    /* MODAL */
     .modal {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(15, 23, 42, 0.65);
-      z-index: 5000;
+      background: rgba(0,0,0,0.6);
+      z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 20px;
     }
 
-    .modal.show {
-      display: flex;
-    }
-
     .modal-content {
       background: white;
-      max-width: 700px;
+      color: #222;
+      max-width: 600px;
       width: 100%;
       max-height: 85vh;
       overflow-y: auto;
-      border-radius: 18px;
-      padding: 28px;
-      position: relative;
+      border-radius: 15px;
+      padding: 25px;
     }
 
     .modal-content h2 {
+      color: #0878d1;
       margin-bottom: 15px;
-    }
-
-    .modal-content p {
-      line-height: 1.7;
-      margin-bottom: 13px;
-      color: #475569;
     }
 
     .close-modal {
-      position: absolute;
-      right: 16px;
-      top: 12px;
-      width: 38px;
-      height: 38px;
+      float: right;
       border: none;
+      background: #ef4444;
+      color: white;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
-      background: #fee2e2;
-      color: #991b1b;
-      font-size: 20px;
-      font-weight: 900;
-    }
-
-    /* =========================
-       FOOTER
-    ========================= */
-
-    footer {
-      margin-top: 50px;
-      background: #0f172a;
-      color: white;
-      padding: 35px 20px;
-    }
-
-    .footer-inner {
-      max-width: 1000px;
-      margin: auto;
-      text-align: center;
-    }
-
-    .footer-logo {
-      color: #22c55e;
-      font-size: 25px;
-      font-weight: 900;
-      margin-bottom: 15px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .footer-links button {
-      border: none;
-      background: transparent;
-      color: #cbd5e1;
       cursor: pointer;
-      font-weight: 700;
+      font-size: 18px;
     }
 
-    .footer-links button:hover {
-      color: white;
+    /* LANGUAGE */
+    .language-menu {
+      display: none;
+      position: absolute;
+      top: 58px;
+      right: 20px;
+      background: white;
+      color: #222;
+      border-radius: 10px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+      overflow: hidden;
+      min-width: 160px;
+      z-index: 200;
     }
 
-    .copyright {
-      color: #94a3b8;
-      font-size: 14px;
+    .language-menu button {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background: white;
+      text-align: left;
+      cursor: pointer;
     }
 
-    /* =========================
-       HIDDEN
-    ========================= */
+    .language-menu button:hover {
+      background: #eef8ff;
+    }
 
     .hidden {
       display: none !important;
     }
 
-    /* =========================
-       MOBILE
-    ========================= */
-
     @media (max-width: 650px) {
 
-      .header-inner {
-        padding: 12px 14px;
-      }
-
-      .logo {
-        font-size: 23px;
-      }
-
-      .header-btn {
-        padding: 9px 11px;
-        font-size: 13px;
-      }
-
-      .hero {
-        padding-top: 50px;
-      }
-
-      .hero p {
-        font-size: 16px;
+      .hero h1 {
+        font-size: 29px;
       }
 
       .card {
-        padding: 20px;
-        border-radius: 17px;
+        padding: 18px;
       }
 
-      .card h2 {
-        font-size: 23px;
+      .share-buttons {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .poll-question {
-        font-size: 23px;
-      }
-
-      .share-link-box {
+      .share-link {
         flex-direction: column;
       }
 
-      .share-link-box button {
-        width: 100%;
+      .copy-btn {
+        padding: 12px;
       }
 
-      .builder-buttons {
-        flex-direction: column;
+      header {
+        padding: 12px 15px;
       }
 
-      .builder-buttons button {
-        width: 100%;
+      .logo {
+        font-size: 21px;
+      }
+
+      .header-btn {
+        padding: 8px 10px;
       }
     }
   </style>
@@ -688,2441 +485,1040 @@
 
 <body>
 
-  <!-- =========================
-       HEADER
-  ========================= -->
+<header>
 
-  <header>
-    <div class="header-inner">
+  <div class="logo">
+    PollSpace
+  </div>
 
-      <a href="#" class="logo">
-        PollSpace
-      </a>
+  <div class="header-buttons">
 
-      <div class="header-actions">
+    <button class="header-btn" id="createPollTop">
+      Create Poll
+    </button>
 
-        <button
-          class="header-btn create-header-btn"
-          id="headerCreateBtn"
-        >
-          Create Poll
-        </button>
+    <button class="header-btn" id="languageBtn">
+      Language
+    </button>
 
-        <div class="language-wrapper">
+  </div>
 
-          <button
-            class="header-btn language-btn"
-            id="languageBtn"
-          >
-            Language
-          </button>
+  <div class="language-menu" id="languageMenu">
 
-          <div
-            class="language-menu"
-            id="languageMenu"
-          >
+    <button data-lang="en">English</button>
+    <button data-lang="hi">हिन्दी</button>
+    <button data-lang="pa">ਪੰਜਾਬੀ</button>
+    <button data-lang="es">Español</button>
+    <button data-lang="fr">Français</button>
+    <button data-lang="de">Deutsch</button>
 
-            <button
-              class="language-option"
-              data-lang="en"
-            >
-              🇬🇧 English
-            </button>
+  </div>
 
-            <button
-              class="language-option"
-              data-lang="hi"
-            >
-              🇮🇳 हिंदी
-            </button>
-
-            <button
-              class="language-option"
-              data-lang="pa"
-            >
-              🇮🇳 ਪੰਜਾਬੀ
-            </button>
-
-            <button
-              class="language-option"
-              data-lang="es"
-            >
-              🇪🇸 Español
-            </button>
-
-            <button
-              class="language-option"
-              data-lang="fr"
-            >
-              🇫🇷 Français
-            </button>
-
-            <button
-              class="language-option"
-              data-lang="de"
-            >
-              🇩🇪 Deutsch
-            </button>
-
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </header>
+</header>
 
 
-  <!-- =========================
-       HERO
-  ========================= -->
+<main class="container">
 
   <section class="hero">
 
-    <h1 id="heroTitle">
-      Create. Share. Vote.
+    <h1 id="mainTitle">
+      Create Your Poll
     </h1>
 
-    <p id="heroSubtitle">
-      Create a poll in seconds, share it with anyone and watch the results update live.
+    <p id="mainSubtitle">
+      Ask a question, collect votes and share your poll.
     </p>
 
   </section>
 
 
-  <main class="container">
+  <!-- STATUS -->
 
-    <!-- STATUS -->
-
-    <div
-      id="status"
-      class="status"
-    ></div>
+  <div id="status" class="status"></div>
 
 
-    <!-- =========================
-         CREATE POLL
-    ========================= -->
+  <!-- CREATE POLL -->
 
-    <section
-      class="card"
-      id="createSection"
+  <section class="card" id="createCard">
+
+    <h2 id="createTitle">
+      Create Poll
+    </h2>
+
+    <label id="questionLabel">
+      Poll Question
+    </label>
+
+    <input
+      type="text"
+      id="questionInput"
+      placeholder="What do you want to ask?"
     >
 
-      <h2 id="createTitle">
-        Create Your Poll
+
+    <label id="optionsLabel">
+      Options
+    </label>
+
+    <div id="optionsContainer">
+
+      <div class="option-row">
+        <input
+          type="text"
+          class="option-input"
+          placeholder="Option 1"
+        >
+      </div>
+
+      <div class="option-row">
+        <input
+          type="text"
+          class="option-input"
+          placeholder="Option 2"
+        >
+      </div>
+
+    </div>
+
+
+    <button class="add-option" id="addOptionBtn">
+      + Add Option
+    </button>
+
+
+    <button class="create-btn" id="createBtn">
+      Create Poll
+    </button>
+
+  </section>
+
+
+  <!-- POLL -->
+
+  <section class="card hidden" id="pollCard">
+
+    <div class="poll-question" id="pollQuestion">
+    </div>
+
+    <div id="voteOptions">
+    </div>
+
+    <button class="vote-btn" id="voteBtn">
+      Vote
+    </button>
+
+
+    <!-- RESULTS -->
+
+    <div id="resultsArea" class="hidden">
+
+      <hr style="margin:25px 0;border:none;border-top:1px solid #ddd;">
+
+      <h2 style="color:#0878d1;margin-bottom:18px;">
+        Live Results
       </h2>
 
-      <label
-        class="field-label"
-        for="questionInput"
-        id="questionLabel"
-      >
-        Your Question
-      </label>
+      <div id="resultsContainer">
+      </div>
+
+      <div class="total-votes">
+        Total Votes:
+        <span id="totalVotes">0</span>
+      </div>
+
+    </div>
+
+
+    <!-- SHARE -->
+
+    <div class="share-box" id="shareBox">
+
+      <h3>
+        Share This Poll
+      </h3>
+
+      <div class="share-link">
+
+        <input
+          type="text"
+          id="shareUrl"
+          readonly
+        >
+
+        <button
+          class="copy-btn"
+          id="copyBtn"
+        >
+          Copy
+        </button>
+
+      </div>
+
+
+      <div class="share-buttons">
+
+        <button
+          class="share-btn whatsapp"
+          id="whatsappBtn"
+        >
+          WhatsApp
+        </button>
+
+        <button
+          class="share-btn telegram"
+          id="telegramBtn"
+        >
+          Telegram
+        </button>
+
+        <button
+          class="share-btn facebook"
+          id="facebookBtn"
+        >
+          Facebook
+        </button>
+
+        <button
+          class="share-btn x"
+          id="xBtn"
+        >
+          X
+        </button>
+
+        <button
+          class="share-btn instagram"
+          id="instagramBtn"
+        >
+          Instagram
+        </button>
+
+        <button
+          class="share-btn tiktok"
+          id="tiktokBtn"
+        >
+          TikTok
+        </button>
+
+        <button
+          class="share-btn copy-link"
+          id="copyLinkBtn"
+        >
+          Copy Link
+        </button>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- AD -->
+
+  <div class="ad-box">
+    Advertisement
+  </div>
+
+</main>
+
+
+<footer>
+
+  <div>
+
+    <a id="privacyLink">
+      Privacy Policy
+    </a>
+
+    <a id="termsLink">
+      Terms & Conditions
+    </a>
+
+    <a id="aboutLink">
+      About
+    </a>
+
+  </div>
+
+  <p>
+    © 2026 PollSpace. All rights reserved.
+  </p>
+
+</footer>
+
+
+<!-- MODAL -->
+
+<div class="modal" id="modal">
+
+  <div class="modal-content">
+
+    <button class="close-modal" id="closeModal">
+      ×
+    </button>
+
+    <h2 id="modalTitle">
+      About
+    </h2>
+
+    <div id="modalText">
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+  import {
+    initializeApp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+
+  import {
+    getFirestore,
+    collection,
+    doc,
+    addDoc,
+    getDoc,
+    onSnapshot,
+    runTransaction,
+    serverTimestamp
+  } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+  /* =========================================
+     FIREBASE CONFIG
+  ========================================= */
+
+  const firebaseConfig = {
+
+    apiKey: "AIzaSyCRbHdl3NpmaXw-Z1En9uORSgrvDDmXq58",
+
+    authDomain: "creatpoll.firebaseapp.com",
+
+    projectId: "creatpoll",
+
+    storageBucket: "creatpoll.firebasestorage.app",
+
+    messagingSenderId: "416906338883",
+
+    appId: "1:416906338883:web:338368ec7c14312dc7eaf6",
+
+    measurementId: "G-SYC4B7YKPV"
+
+  };
+
+
+  /* =========================================
+     FIREBASE INITIALIZE
+  ========================================= */
+
+  const app = initializeApp(firebaseConfig);
+
+  const db = getFirestore(app);
+
+
+  /* =========================================
+     ELEMENTS
+  ========================================= */
+
+  const createBtn =
+    document.getElementById("createBtn");
+
+  const addOptionBtn =
+    document.getElementById("addOptionBtn");
+
+  const optionsContainer =
+    document.getElementById("optionsContainer");
+
+  const questionInput =
+    document.getElementById("questionInput");
+
+  const createCard =
+    document.getElementById("createCard");
+
+  const pollCard =
+    document.getElementById("pollCard");
+
+  const pollQuestion =
+    document.getElementById("pollQuestion");
+
+  const voteOptions =
+    document.getElementById("voteOptions");
+
+  const voteBtn =
+    document.getElementById("voteBtn");
+
+  const resultsArea =
+    document.getElementById("resultsArea");
+
+  const resultsContainer =
+    document.getElementById("resultsContainer");
+
+  const totalVotes =
+    document.getElementById("totalVotes");
+
+  const shareUrl =
+    document.getElementById("shareUrl");
+
+  const status =
+    document.getElementById("status");
+
+
+  let currentPollId = null;
+
+  let selectedOption = null;
+
+  let unsubscribePoll = null;
+
+
+  /* =========================================
+     STATUS MESSAGE
+  ========================================= */
+
+  function showStatus(message, type = "success") {
+
+    status.textContent = message;
+
+    status.className = "status " + type;
+
+    status.style.display = "block";
+
+    setTimeout(() => {
+
+      status.style.display = "none";
+
+    }, 5000);
+
+  }
+
+
+  /* =========================================
+     ADD OPTION
+  ========================================= */
+
+  addOptionBtn.addEventListener("click", () => {
+
+    const count =
+      document.querySelectorAll(".option-input").length + 1;
+
+    const row =
+      document.createElement("div");
+
+    row.className = "option-row";
+
+    row.innerHTML = `
 
       <input
-        id="questionInput"
-        class="question-input"
         type="text"
-        maxlength="300"
-        placeholder="What do you want to ask?"
+        class="option-input"
+        placeholder="Option ${count}"
       >
-
-      <label
-        class="field-label"
-        id="optionsLabel"
-      >
-        Options
-      </label>
-
-      <div
-        id="optionsArea"
-        class="options-area"
-      >
-
-        <div class="option-row">
-          <input
-            class="option-input"
-            type="text"
-            maxlength="150"
-            placeholder="Option 1"
-          >
-        </div>
-
-        <div class="option-row">
-          <input
-            class="option-input"
-            type="text"
-            maxlength="150"
-            placeholder="Option 2"
-          >
-        </div>
-
-      </div>
-
-      <div class="builder-buttons">
-
-        <button
-          id="addOptionBtn"
-          class="secondary-btn"
-        >
-          + Add Option
-        </button>
-
-        <button
-          id="createPollBtn"
-          class="primary-btn"
-        >
-          Create Poll
-        </button>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         AD
-    ========================= -->
-
-    <div class="ad-box">
-      Advertisement
-    </div>
-
-
-    <!-- =========================
-         POLL
-    ========================= -->
-
-    <section
-      id="pollSection"
-      class="card hidden"
-    >
-
-      <div
-        id="pollLoading"
-        class="loading"
-      >
-        Loading poll...
-      </div>
-
-      <div
-        id="pollContent"
-        class="hidden"
-      >
-
-        <div
-          id="pollQuestion"
-          class="poll-question"
-        ></div>
-
-        <div
-          id="voteOptions"
-          class="vote-options"
-        ></div>
-
-        <button
-          id="submitVoteBtn"
-          class="primary-btn"
-          style="margin-top:18px;"
-        >
-          Vote
-        </button>
-
-        <div
-          id="resultsArea"
-          style="margin-top:30px;"
-        >
-
-          <h3 style="margin-bottom:18px;">
-            Live Results
-          </h3>
-
-          <div id="resultsList"></div>
-
-          <div
-            id="totalVotes"
-            class="total-votes"
-          >
-            Total Votes: 0
-          </div>
-
-        </div>
-
-
-        <!-- SHARE -->
-
-        <div class="share-section">
-
-          <h3 id="shareTitle">
-            Share this Poll
-          </h3>
-
-          <div class="share-buttons">
-
-            <button
-              class="share-btn whatsapp"
-              id="whatsappBtn"
-            >
-              WhatsApp
-            </button>
-
-            <button
-              class="share-btn telegram"
-              id="telegramBtn"
-            >
-              Telegram
-            </button>
-
-            <button
-              class="share-btn facebook"
-              id="facebookBtn"
-            >
-              Facebook
-            </button>
-
-            <button
-              class="share-btn twitter"
-              id="twitterBtn"
-            >
-              X
-            </button>
-
-            <button
-              class="share-btn instagram"
-              id="instagramBtn"
-            >
-              Instagram
-            </button>
-
-            <button
-              class="share-btn tiktok"
-              id="tiktokBtn"
-            >
-              TikTok
-            </button>
-
-            <button
-              class="share-btn copy"
-              id="copyLinkBtn"
-            >
-              Copy Link
-            </button>
-
-          </div>
-
-          <div class="share-link-box">
-
-            <input
-              id="shareLinkInput"
-              class="share-link-input"
-              readonly
-            >
-
-            <button
-              id="copyLinkBtn2"
-              class="secondary-btn"
-            >
-              Copy
-            </button>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- =========================
-       FOOTER
-  ========================= -->
-
-  <footer>
-
-    <div class="footer-inner">
-
-      <div class="footer-logo">
-        PollSpace
-      </div>
-
-      <div class="footer-links">
-
-        <button id="privacyBtn">
-          Privacy Policy
-        </button>
-
-        <button id="termsBtn">
-          Terms & Conditions
-        </button>
-
-        <button id="aboutBtn">
-          About
-        </button>
-
-      </div>
-
-      <div class="copyright">
-        © 2026 PollSpace. All rights reserved.
-      </div>
-
-    </div>
-
-  </footer>
-
-
-  <!-- =========================
-       PRIVACY MODAL
-  ========================= -->
-
-  <div
-    id="privacyModal"
-    class="modal"
-  >
-
-    <div class="modal-content">
 
       <button
-        class="close-modal"
-        data-close="privacyModal"
+        type="button"
+        class="remove-option"
+        title="Remove option"
       >
         ×
       </button>
 
-      <h2>
-        Privacy Policy
-      </h2>
+    `;
 
-      <p>
-        PollSpace allows users to create and vote in polls.
-        Poll information may be stored in Firebase Firestore so
-        that poll results can be shared and updated live.
-      </p>
+    optionsContainer.appendChild(row);
 
-      <p>
-        We do not ask users to provide personal information merely
-        to create or vote in a poll.
-      </p>
+  });
 
-      <p>
-        This website may use browser storage to remember whether
-        a browser has already voted in a particular poll.
-      </p>
 
-      <p>
-        If advertising or analytics services are added later,
-        their respective privacy policies may also apply.
-      </p>
+  /* =========================================
+     REMOVE OPTION
+  ========================================= */
 
-    </div>
+  optionsContainer.addEventListener("click", (event) => {
 
-  </div>
-
-
-  <!-- =========================
-       TERMS MODAL
-  ========================= -->
-
-  <div
-    id="termsModal"
-    class="modal"
-  >
-
-    <div class="modal-content">
-
-      <button
-        class="close-modal"
-        data-close="termsModal"
-      >
-        ×
-      </button>
-
-      <h2>
-        Terms & Conditions
-      </h2>
-
-      <p>
-        Users are responsible for the polls and content they create.
-      </p>
-
-      <p>
-        Do not use PollSpace for unlawful, harmful, fraudulent,
-        abusive or misleading content.
-      </p>
-
-      <p>
-        Poll results are generated from votes submitted by users.
-        PollSpace does not guarantee that every poll or vote is
-        accurate or representative.
-      </p>
-
-      <p>
-        The service may be changed, suspended or discontinued
-        when necessary.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- =========================
-       ABOUT MODAL
-  ========================= -->
-
-  <div
-    id="aboutModal"
-    class="modal"
-  >
-
-    <div class="modal-content">
-
-      <button
-        class="close-modal"
-        data-close="aboutModal"
-      >
-        ×
-      </button>
-
-      <h2>
-        About PollSpace
-      </h2>
-
-      <p>
-        PollSpace is a simple polling platform where anyone can
-        create a question, share it and collect live votes.
-      </p>
-
-      <p>
-        Poll results are powered by Firebase Firestore.
-      </p>
-
-    </div>
-
-  </div>
-
-
-  <!-- =========================================================
-       FIREBASE + COMPLETE JAVASCRIPT
-  ========================================================= -->
-
-  <script type="module">
-
-    /* =========================================================
-       FIREBASE IMPORTS
-    ========================================================= */
-
-    import {
-      initializeApp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-    import {
-      getFirestore,
-      collection,
-      doc,
-      addDoc,
-      getDoc,
-      onSnapshot,
-      runTransaction,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-    /* =========================================================
-       YOUR FIREBASE CONFIG
-    ========================================================= */
-
-    const firebaseConfig = {
-
-      apiKey:
-        "AIzaSyCRbHdl3NpmaXw-Z1En9uORSgrvDDmXq58",
-
-      authDomain:
-        "creatpoll.firebaseapp.com",
-
-      projectId:
-        "creatpoll",
-
-      storageBucket:
-        "creatpoll.firebasestorage.app",
-
-      messagingSenderId:
-        "416906338883",
-
-      appId:
-        "1:416906338883:web:338368ec7c14312dc7eaf6",
-
-      measurementId:
-        "G-SYC4B7YKPV"
-    };
-
-
-    /* =========================================================
-       INITIALIZE FIREBASE
-    ========================================================= */
-
-    const app = initializeApp(firebaseConfig);
-
-    const db = getFirestore(app);
-
-
-    /* =========================================================
-       ELEMENTS
-    ========================================================= */
-
-    const createSection =
-      document.getElementById("createSection");
-
-    const pollSection =
-      document.getElementById("pollSection");
-
-    const pollLoading =
-      document.getElementById("pollLoading");
-
-    const pollContent =
-      document.getElementById("pollContent");
-
-    const questionInput =
-      document.getElementById("questionInput");
-
-    const optionsArea =
-      document.getElementById("optionsArea");
-
-    const addOptionBtn =
-      document.getElementById("addOptionBtn");
-
-    const createPollBtn =
-      document.getElementById("createPollBtn");
-
-    const pollQuestion =
-      document.getElementById("pollQuestion");
-
-    const voteOptions =
-      document.getElementById("voteOptions");
-
-    const submitVoteBtn =
-      document.getElementById("submitVoteBtn");
-
-    const resultsList =
-      document.getElementById("resultsList");
-
-    const totalVotes =
-      document.getElementById("totalVotes");
-
-    const shareLinkInput =
-      document.getElementById("shareLinkInput");
-
-    const statusBox =
-      document.getElementById("status");
-
-    const languageBtn =
-      document.getElementById("languageBtn");
-
-    const languageMenu =
-      document.getElementById("languageMenu");
-
-
-    /* =========================================================
-       VARIABLES
-    ========================================================= */
-
-    let currentPollId = null;
-
-    let currentPollData = null;
-
-    let selectedOptionIndex = null;
-
-    let unsubscribePoll = null;
-
-    let optionNumber = 2;
-
-
-    /* =========================================================
-       TRANSLATIONS
-    ========================================================= */
-
-    const translations = {
-
-      en: {
-
-        createPoll: "Create Poll",
-
-        language: "Language",
-
-        heroTitle:
-          "Create. Share. Vote.",
-
-        heroSubtitle:
-          "Create a poll in seconds, share it with anyone and watch the results update live.",
-
-        createTitle:
-          "Create Your Poll",
-
-        questionLabel:
-          "Your Question",
-
-        questionPlaceholder:
-          "What do you want to ask?",
-
-        optionsLabel:
-          "Options",
-
-        addOption:
-          "+ Add Option",
-
-        create:
-          "Create Poll",
-
-        vote:
-          "Vote",
-
-        voted:
-          "Vote Submitted",
-
-        liveResults:
-          "Live Results",
-
-        totalVotes:
-          "Total Votes",
-
-        share:
-          "Share this Poll",
-
-        copied:
-          "Link copied!",
-
-        pollCreated:
-          "Poll created successfully!",
-
-        voteSuccess:
-          "Your vote has been submitted.",
-
-        alreadyVoted:
-          "You have already voted on this poll from this browser.",
-
-        loading:
-          "Loading poll...",
-
-        invalid:
-          "Please enter a question and at least two options.",
-
-        error:
-          "Something went wrong. Please try again."
-
-      },
-
-      hi: {
-
-        createPoll:
-          "पोल बनाएं",
-
-        language:
-          "भाषा",
-
-        heroTitle:
-          "बनाएं। शेयर करें। वोट करें।",
-
-        heroSubtitle:
-          "कुछ ही सेकंड में पोल बनाएं, किसी के साथ शेयर करें और रिजल्ट लाइव देखें।",
-
-        createTitle:
-          "अपना पोल बनाएं",
-
-        questionLabel:
-          "आपका सवाल",
-
-        questionPlaceholder:
-          "आप क्या पूछना चाहते हैं?",
-
-        optionsLabel:
-          "विकल्प",
-
-        addOption:
-          "+ विकल्प जोड़ें",
-
-        create:
-          "पोल बनाएं",
-
-        vote:
-          "वोट करें",
-
-        voted:
-          "वोट हो गया",
-
-        liveResults:
-          "लाइव रिजल्ट",
-
-        totalVotes:
-          "कुल वोट",
-
-        share:
-          "पोल शेयर करें",
-
-        copied:
-          "लिंक कॉपी हो गया!",
-
-        pollCreated:
-          "पोल सफलतापूर्वक बन गया!",
-
-        voteSuccess:
-          "आपका वोट जमा हो गया।",
-
-        alreadyVoted:
-          "इस ब्राउज़र से इस पोल पर पहले ही वोट किया जा चुका है।",
-
-        loading:
-          "पोल लोड हो रहा है...",
-
-        invalid:
-          "कृपया सवाल और कम से कम दो विकल्प डालें।",
-
-        error:
-          "कुछ गलत हो गया। फिर से कोशिश करें।"
-      },
-
-      pa: {
-
-        createPoll:
-          "ਪੋਲ ਬਣਾਓ",
-
-        language:
-          "ਭਾਸ਼ਾ",
-
-        heroTitle:
-          "ਬਣਾਓ। ਸ਼ੇਅਰ ਕਰੋ। ਵੋਟ ਕਰੋ।",
-
-        heroSubtitle:
-          "ਕੁਝ ਸਕਿੰਟਾਂ ਵਿੱਚ ਪੋਲ ਬਣਾਓ, ਕਿਸੇ ਨਾਲ ਵੀ ਸ਼ੇਅਰ ਕਰੋ ਅਤੇ ਲਾਈਵ ਨਤੀਜੇ ਵੇਖੋ।",
-
-        createTitle:
-          "ਆਪਣਾ ਪੋਲ ਬਣਾਓ",
-
-        questionLabel:
-          "ਤੁਹਾਡਾ ਸਵਾਲ",
-
-        questionPlaceholder:
-          "ਤੁਸੀਂ ਕੀ ਪੁੱਛਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
-
-        optionsLabel:
-          "ਵਿਕਲਪ",
-
-        addOption:
-          "+ ਵਿਕਲਪ ਸ਼ਾਮਲ ਕਰੋ",
-
-        create:
-          "ਪੋਲ ਬਣਾਓ",
-
-        vote:
-          "ਵੋਟ ਕਰੋ",
-
-        voted:
-          "ਵੋਟ ਹੋ ਗਿਆ",
-
-        liveResults:
-          "ਲਾਈਵ ਨਤੀਜੇ",
-
-        totalVotes:
-          "ਕੁੱਲ ਵੋਟ",
-
-        share:
-          "ਪੋਲ ਸ਼ੇਅਰ ਕਰੋ",
-
-        copied:
-          "ਲਿੰਕ ਕਾਪੀ ਹੋ ਗਿਆ!",
-
-        pollCreated:
-          "ਪੋਲ ਸਫਲਤਾਪੂਰਵਕ ਬਣ ਗਿਆ!",
-
-        voteSuccess:
-          "ਤੁਹਾਡੀ ਵੋਟ ਜਮ੍ਹਾਂ ਹੋ ਗਈ।",
-
-        alreadyVoted:
-          "ਇਸ ਬ੍ਰਾਊਜ਼ਰ ਤੋਂ ਇਸ ਪੋਲ 'ਤੇ ਪਹਿਲਾਂ ਹੀ ਵੋਟ ਪਾਈ ਜਾ ਚੁੱਕੀ ਹੈ।",
-
-        loading:
-          "ਪੋਲ ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ...",
-
-        invalid:
-          "ਕਿਰਪਾ ਕਰਕੇ ਸਵਾਲ ਅਤੇ ਘੱਟੋ-ਘੱਟ ਦੋ ਵਿਕਲਪ ਦਿਓ।",
-
-        error:
-          "ਕੁਝ ਗਲਤ ਹੋ ਗਿਆ। ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ।"
-      },
-
-      es: {
-
-        createPoll:
-          "Crear encuesta",
-
-        language:
-          "Idioma",
-
-        heroTitle:
-          "Crea. Comparte. Vota.",
-
-        heroSubtitle:
-          "Crea una encuesta, compártela y mira los resultados en vivo.",
-
-        createTitle:
-          "Crear encuesta",
-
-        questionLabel:
-          "Tu pregunta",
-
-        questionPlaceholder:
-          "¿Qué quieres preguntar?",
-
-        optionsLabel:
-          "Opciones",
-
-        addOption:
-          "+ Añadir opción",
-
-        create:
-          "Crear encuesta",
-
-        vote:
-          "Votar",
-
-        voted:
-          "Voto enviado",
-
-        liveResults:
-          "Resultados en vivo",
-
-        totalVotes:
-          "Votos totales",
-
-        share:
-          "Compartir encuesta",
-
-        copied:
-          "¡Enlace copiado!",
-
-        pollCreated:
-          "¡Encuesta creada!",
-
-        voteSuccess:
-          "Tu voto ha sido enviado.",
-
-        alreadyVoted:
-          "Ya has votado desde este navegador.",
-
-        loading:
-          "Cargando encuesta...",
-
-        invalid:
-          "Introduce una pregunta y al menos dos opciones.",
-
-        error:
-          "Algo salió mal. Inténtalo de nuevo."
-      },
-
-      fr: {
-
-        createPoll:
-          "Créer un sondage",
-
-        language:
-          "Langue",
-
-        heroTitle:
-          "Créez. Partagez. Votez.",
-
-        heroSubtitle:
-          "Créez un sondage, partagez-le et regardez les résultats en direct.",
-
-        createTitle:
-          "Créer votre sondage",
-
-        questionLabel:
-          "Votre question",
-
-        questionPlaceholder:
-          "Que voulez-vous demander ?",
-
-        optionsLabel:
-          "Options",
-
-        addOption:
-          "+ Ajouter une option",
-
-        create:
-          "Créer le sondage",
-
-        vote:
-          "Voter",
-
-        voted:
-          "Vote envoyé",
-
-        liveResults:
-          "Résultats en direct",
-
-        totalVotes:
-          "Votes totaux",
-
-        share:
-          "Partager ce sondage",
-
-        copied:
-          "Lien copié !",
-
-        pollCreated:
-          "Sondage créé !",
-
-        voteSuccess:
-          "Votre vote a été envoyé.",
-
-        alreadyVoted:
-          "Vous avez déjà voté depuis ce navigateur.",
-
-        loading:
-          "Chargement...",
-
-        invalid:
-          "Entrez une question et au moins deux options.",
-
-        error:
-          "Une erreur est survenue."
-      },
-
-      de: {
-
-        createPoll:
-          "Umfrage erstellen",
-
-        language:
-          "Sprache",
-
-        heroTitle:
-          "Erstellen. Teilen. Abstimmen.",
-
-        heroSubtitle:
-          "Erstelle eine Umfrage, teile sie und sehe die Ergebnisse live.",
-
-        createTitle:
-          "Umfrage erstellen",
-
-        questionLabel:
-          "Deine Frage",
-
-        questionPlaceholder:
-          "Was möchtest du fragen?",
-
-        optionsLabel:
-          "Optionen",
-
-        addOption:
-          "+ Option hinzufügen",
-
-        create:
-          "Umfrage erstellen",
-
-        vote:
-          "Abstimmen",
-
-        voted:
-          "Stimme abgegeben",
-
-        liveResults:
-          "Live-Ergebnisse",
-
-        totalVotes:
-          "Stimmen insgesamt",
-
-        share:
-          "Umfrage teilen",
-
-        copied:
-          "Link kopiert!",
-
-        pollCreated:
-          "Umfrage erstellt!",
-
-        voteSuccess:
-          "Deine Stimme wurde abgegeben.",
-
-        alreadyVoted:
-          "Du hast bereits von diesem Browser abgestimmt.",
-
-        loading:
-          "Umfrage wird geladen...",
-
-        invalid:
-          "Bitte gib eine Frage und mindestens zwei Optionen ein.",
-
-        error:
-          "Etwas ist schiefgelaufen."
-      }
-    };
-
-
-    let currentLanguage = "en";
-
-
-    /* =========================================================
-       LANGUAGE FUNCTION
-    ========================================================= */
-
-    function setLanguage(lang) {
-
-      if (!translations[lang]) {
-        lang = "en";
-      }
-
-      currentLanguage = lang;
-
-      const t = translations[lang];
-
-      document.getElementById("createHeaderBtn").textContent =
-        t.createPoll;
-
-      languageBtn.textContent =
-        t.language;
-
-      document.getElementById("heroTitle").textContent =
-        t.heroTitle;
-
-      document.getElementById("heroSubtitle").textContent =
-        t.heroSubtitle;
-
-      document.getElementById("createTitle").textContent =
-        t.createTitle;
-
-      document.getElementById("questionLabel").textContent =
-        t.questionLabel;
-
-      questionInput.placeholder =
-        t.questionPlaceholder;
-
-      document.getElementById("optionsLabel").textContent =
-        t.optionsLabel;
-
-      addOptionBtn.textContent =
-        t.addOption;
-
-      createPollBtn.textContent =
-        t.create;
-
-      submitVoteBtn.textContent =
-        selectedOptionIndex !== null
-          ? t.voted
-          : t.vote;
-
-      document.querySelector(
-        "#resultsArea h3"
-      ).textContent =
-        t.liveResults;
-
-      document.getElementById("shareTitle").textContent =
-        t.share;
-
-      localStorage.setItem(
-        "pollspace-language",
-        lang
-      );
-
-      languageMenu.classList.remove("show");
-    }
-
-
-    /* =========================================================
-       LOAD SAVED LANGUAGE
-    ========================================================= */
-
-    const savedLanguage =
-      localStorage.getItem("pollspace-language");
-
-    if (savedLanguage && translations[savedLanguage]) {
-      setLanguage(savedLanguage);
-    } else {
-      setLanguage("en");
-    }
-
-
-    /* =========================================================
-       LANGUAGE MENU
-    ========================================================= */
-
-    languageBtn.addEventListener(
-      "click",
-      (event) => {
-
-        event.stopPropagation();
-
-        languageMenu.classList.toggle("show");
-
-      }
-    );
-
-
-    document.querySelectorAll(
-      ".language-option"
-    ).forEach(
-      button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            setLanguage(
-              button.dataset.lang
-            );
-
-          }
-        );
-
-      }
-    );
-
-
-    document.addEventListener(
-      "click",
-      () => {
-
-        languageMenu.classList.remove("show");
-
-      }
-    );
-
-
-    /* =========================================================
-       STATUS MESSAGE
-    ========================================================= */
-
-    function showStatus(
-      message,
-      type = "info"
+    if (
+      event.target.classList.contains("remove-option")
     ) {
 
-      statusBox.textContent = message;
+      const rows =
+        document.querySelectorAll(".option-row");
 
-      statusBox.className =
-        "status show " + type;
+      if (rows.length <= 2) {
 
-      window.scrollTo({
-        top: 0,
+        showStatus(
+          "At least 2 options are required.",
+          "error"
+        );
+
+        return;
+      }
+
+      event.target.parentElement.remove();
+
+    }
+
+  });
+
+
+  /* =========================================
+     CREATE POLL
+  ========================================= */
+
+  createBtn.addEventListener("click", async () => {
+
+    const question =
+      questionInput.value.trim();
+
+
+    const optionInputs =
+      document.querySelectorAll(".option-input");
+
+
+    const options =
+      Array.from(optionInputs)
+
+        .map(input => input.value.trim())
+
+        .filter(value => value !== "");
+
+
+    if (!question) {
+
+      showStatus(
+        "Please enter a poll question.",
+        "error"
+      );
+
+      questionInput.focus();
+
+      return;
+    }
+
+
+    if (options.length < 2) {
+
+      showStatus(
+        "Please enter at least 2 options.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    if (options.length > 10) {
+
+      showStatus(
+        "Maximum 10 options are allowed.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    /* Remove duplicate options */
+
+    const uniqueOptions =
+      [...new Set(
+        options.map(option =>
+          option.toLowerCase()
+        )
+      )];
+
+
+    if (uniqueOptions.length !== options.length) {
+
+      showStatus(
+        "Please do not use duplicate options.",
+        "error"
+      );
+
+      return;
+    }
+
+
+    createBtn.disabled = true;
+
+    createBtn.textContent =
+      "Creating Poll...";
+
+
+    try {
+
+      const counts =
+        options.map(() => 0);
+
+
+      const pollData = {
+
+        question: question,
+
+        options: options,
+
+        counts: counts,
+
+        totalVotes: 0,
+
+        createdAt: serverTimestamp()
+
+      };
+
+
+      console.log(
+        "Creating poll:",
+        pollData
+      );
+
+
+      const pollRef =
+        await addDoc(
+          collection(db, "polls"),
+          pollData
+        );
+
+
+      console.log(
+        "Poll created:",
+        pollRef.id
+      );
+
+
+      currentPollId =
+        pollRef.id;
+
+
+      const url =
+        window.location.origin +
+        window.location.pathname +
+        "?poll=" +
+        currentPollId;
+
+
+      shareUrl.value = url;
+
+
+      createCard.classList.add("hidden");
+
+      pollCard.classList.remove("hidden");
+
+
+      showStatus(
+        "Poll created successfully! Now share your poll.",
+        "success"
+      );
+
+
+      await loadPoll(currentPollId);
+
+
+      window.history.replaceState(
+        {},
+        "",
+        "?poll=" + currentPollId
+      );
+
+
+      pollCard.scrollIntoView({
         behavior: "smooth"
       });
 
-      setTimeout(
-        () => {
 
-          statusBox.classList.remove("show");
+    } catch (error) {
 
-        },
-        5000
+      console.error(
+        "CREATE POLL ERROR:",
+        error
       );
+
+
+      showStatus(
+        "Poll create नहीं हो पाया: " +
+        error.message,
+        "error"
+      );
+
+    } finally {
+
+      createBtn.disabled = false;
+
+      createBtn.textContent =
+        "Create Poll";
+
+    }
+
+  });
+
+
+  /* =========================================
+     LOAD POLL
+  ========================================= */
+
+  async function loadPoll(pollId) {
+
+    currentPollId = pollId;
+
+
+    try {
+
+      const pollRef =
+        doc(db, "polls", pollId);
+
+
+      const pollSnap =
+        await getDoc(pollRef);
+
+
+      if (!pollSnap.exists()) {
+
+        showStatus(
+          "This poll does not exist.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      createCard.classList.add("hidden");
+
+      pollCard.classList.remove("hidden");
+
+
+      shareUrl.value =
+        window.location.origin +
+        window.location.pathname +
+        "?poll=" +
+        pollId;
+
+
+      startRealtimeListener(
+        pollId
+      );
+
+
+      pollCard.scrollIntoView({
+        behavior: "smooth"
+      });
+
+
+    } catch (error) {
+
+      console.error(
+        "LOAD POLL ERROR:",
+        error
+      );
+
+
+      showStatus(
+        "Poll load नहीं हो पाया: " +
+        error.message,
+        "error"
+      );
+
+    }
+
+  }
+
+
+  /* =========================================
+     REAL TIME FIRESTORE LISTENER
+  ========================================= */
+
+  function startRealtimeListener(pollId) {
+
+    if (unsubscribePoll) {
+
+      unsubscribePoll();
+
     }
 
 
-    /* =========================================================
-       ADD OPTION
-    ========================================================= */
-
-    addOptionBtn.addEventListener(
-      "click",
-      () => {
-
-        const existingOptions =
-          optionsArea.querySelectorAll(
-            ".option-row"
-          );
-
-        if (existingOptions.length >= 10) {
-
-          showStatus(
-            "Maximum 10 options are allowed.",
-            "error"
-          );
-
-          return;
-        }
-
-        optionNumber++;
-
-        const row =
-          document.createElement("div");
-
-        row.className =
-          "option-row";
-
-        row.innerHTML = `
-
-          <input
-            class="option-input"
-            type="text"
-            maxlength="150"
-            placeholder="Option ${optionNumber}"
-          >
-
-          <button
-            type="button"
-            class="remove-option"
-            title="Remove option"
-          >
-            ×
-          </button>
-
-        `;
-
-        optionsArea.appendChild(row);
-
-      }
-    );
+    const pollRef =
+      doc(db, "polls", pollId);
 
 
-    /* =========================================================
-       REMOVE OPTION
-    ========================================================= */
+    unsubscribePoll =
+      onSnapshot(
 
-    optionsArea.addEventListener(
-      "click",
-      (event) => {
+        pollRef,
 
-        if (
-          event.target.classList.contains(
-            "remove-option"
-          )
-        ) {
+        (snapshot) => {
 
-          const rows =
-            optionsArea.querySelectorAll(
-              ".option-row"
-            );
-
-          if (rows.length <= 2) {
+          if (!snapshot.exists()) {
 
             showStatus(
-              "A poll needs at least 2 options.",
+              "Poll was not found.",
               "error"
             );
 
             return;
           }
 
-          event.target
-            .closest(".option-row")
-            .remove();
 
-        }
-
-      }
-    );
+          const data =
+            snapshot.data();
 
 
-    /* =========================================================
-       CREATE POLL
-    ========================================================= */
+          renderPoll(data);
 
-    createPollBtn.addEventListener(
-      "click",
-      async () => {
+        },
 
-        const question =
-          questionInput.value.trim();
-
-        const inputs =
-          optionsArea.querySelectorAll(
-            ".option-input"
-          );
-
-        const options =
-          Array.from(inputs)
-            .map(
-              input => input.value.trim()
-            )
-            .filter(
-              option => option.length > 0
-            );
-
-        if (
-          !question ||
-          options.length < 2
-        ) {
-
-          showStatus(
-            translations[currentLanguage].invalid,
-            "error"
-          );
-
-          return;
-        }
-
-        if (options.length > 10) {
-
-          showStatus(
-            "Maximum 10 options are allowed.",
-            "error"
-          );
-
-          return;
-        }
-
-        const duplicateOptions =
-          new Set(
-            options.map(
-              option =>
-                option.toLowerCase()
-            )
-          );
-
-        if (
-          duplicateOptions.size !==
-          options.length
-        ) {
-
-          showStatus(
-            "Please use different options.",
-            "error"
-          );
-
-          return;
-        }
-
-        createPollBtn.disabled = true;
-
-        createPollBtn.textContent =
-          "Creating...";
-
-        try {
-
-          const counts =
-            options.map(
-              () => 0
-            );
-
-          const pollData = {
-
-            question:
-              question,
-
-            options:
-              options,
-
-            counts:
-              counts,
-
-            totalVotes:
-              0,
-
-            createdAt:
-              serverTimestamp()
-
-          };
-
-          const pollRef =
-            await addDoc(
-              collection(
-                db,
-                "polls"
-              ),
-              pollData
-            );
-
-          const pollId =
-            pollRef.id;
-
-          const newUrl =
-            window.location.origin +
-            window.location.pathname +
-            "?poll=" +
-            encodeURIComponent(
-              pollId
-            );
-
-          window.history.pushState(
-            {},
-            "",
-            newUrl
-          );
-
-          currentPollId =
-            pollId;
-
-          showPoll(pollId);
-
-          showStatus(
-            translations[currentLanguage].pollCreated,
-            "success"
-          );
-
-        } catch (error) {
+        (error) => {
 
           console.error(
-            "Create poll error:",
+            "REALTIME ERROR:",
             error
           );
 
+
           showStatus(
-            translations[currentLanguage].error,
+            "Live poll connection error: " +
+            error.message,
             "error"
           );
 
-        } finally {
-
-          createPollBtn.disabled = false;
-
-          createPollBtn.textContent =
-            translations[currentLanguage].create;
-
         }
 
-      }
-    );
-
-
-    /* =========================================================
-       SHOW POLL
-    ========================================================= */
-
-    function showPoll(pollId) {
-
-      currentPollId =
-        pollId;
-
-      createSection.classList.add(
-        "hidden"
       );
 
-      pollSection.classList.remove(
-        "hidden"
-      );
+  }
 
-      pollLoading.classList.remove(
-        "hidden"
-      );
 
-      pollContent.classList.add(
-        "hidden"
-      );
+  /* =========================================
+     RENDER POLL
+  ========================================= */
 
-      if (unsubscribePoll) {
+  function renderPoll(data) {
 
-        unsubscribePoll();
+    pollQuestion.textContent =
+      data.question;
 
-        unsubscribePoll = null;
 
-      }
+    voteOptions.innerHTML = "";
 
-      const pollRef =
-        doc(
-          db,
-          "polls",
-          pollId
-        );
 
-      unsubscribePoll =
-        onSnapshot(
-          pollRef,
-          snapshot => {
+    data.options.forEach(
+      (option, index) => {
 
-            if (!snapshot.exists()) {
+        const button =
+          document.createElement("button");
 
-              pollLoading.textContent =
-                "This poll does not exist.";
 
-              return;
-            }
+        button.className =
+          "vote-option";
 
-            currentPollData =
-              snapshot.data();
 
-            renderPoll(
-              currentPollData
-            );
+        button.textContent =
+          option;
 
-          },
-          error => {
 
-            console.error(
-              "Poll listener error:",
-              error
-            );
+        button.dataset.index =
+          index;
 
-            showStatus(
-              translations[currentLanguage].error,
-              "error"
+
+        button.addEventListener(
+          "click",
+          () => {
+
+            selectedOption = index;
+
+
+            document
+              .querySelectorAll(".vote-option")
+              .forEach(btn => {
+
+                btn.classList.remove(
+                  "selected"
+                );
+
+              });
+
+
+            button.classList.add(
+              "selected"
             );
 
           }
         );
 
-      shareLinkInput.value =
-        window.location.href;
 
-      window.scrollTo({
-        top: pollSection.offsetTop - 80,
-        behavior: "smooth"
-      });
-
-    }
-
-
-    /* =========================================================
-       RENDER POLL
-    ========================================================= */
-
-    function renderPoll(
-      poll
-    ) {
-
-      pollLoading.classList.add(
-        "hidden"
-      );
-
-      pollContent.classList.remove(
-        "hidden"
-      );
-
-      pollQuestion.textContent =
-        poll.question;
-
-      voteOptions.innerHTML = "";
-
-      selectedOptionIndex = null;
-
-      const alreadyVoted =
-        hasVoted(
-          currentPollId
+        voteOptions.appendChild(
+          button
         );
-
-      poll.options.forEach(
-        (
-          option,
-          index
-        ) => {
-
-          const button =
-            document.createElement(
-              "button"
-            );
-
-          button.className =
-            "vote-option";
-
-          button.textContent =
-            option;
-
-          button.dataset.index =
-            index;
-
-          if (alreadyVoted) {
-
-            button.disabled = true;
-
-          }
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              if (alreadyVoted) {
-                return;
-              }
-
-              document
-                .querySelectorAll(
-                  ".vote-option"
-                )
-                .forEach(
-                  item =>
-                    item.classList.remove(
-                      "selected"
-                    )
-                );
-
-              button.classList.add(
-                "selected"
-              );
-
-              selectedOptionIndex =
-                index;
-
-            }
-          );
-
-          voteOptions.appendChild(
-            button
-          );
-
-        }
-      );
-
-      if (alreadyVoted) {
-
-        submitVoteBtn.disabled =
-          true;
-
-        submitVoteBtn.textContent =
-          translations[currentLanguage]
-            .voted;
-
-      } else {
-
-        submitVoteBtn.disabled =
-          false;
-
-        submitVoteBtn.textContent =
-          translations[currentLanguage]
-            .vote;
-
-      }
-
-      renderResults(
-        poll
-      );
-
-      shareLinkInput.value =
-        window.location.href;
-
-    }
-
-
-    /* =========================================================
-       RENDER LIVE RESULTS
-    ========================================================= */
-
-    function renderResults(
-      poll
-    ) {
-
-      resultsList.innerHTML = "";
-
-      const counts =
-        Array.isArray(poll.counts)
-          ? poll.counts
-          : poll.options.map(
-              () => 0
-            );
-
-      const total =
-        Number(
-          poll.totalVotes || 0
-        );
-
-      poll.options.forEach(
-        (
-          option,
-          index
-        ) => {
-
-          const count =
-            Number(
-              counts[index] || 0
-            );
-
-          const percentage =
-            total > 0
-              ? Math.round(
-                  (count / total) *
-                  100
-                )
-              : 0;
-
-          const item =
-            document.createElement(
-              "div"
-            );
-
-          item.className =
-            "result-item";
-
-          item.innerHTML = `
-
-            <div class="result-top">
-
-              <span class="result-label">
-                ${escapeHtml(option)}
-              </span>
-
-              <span class="result-count">
-                ${count} (${percentage}%)
-              </span>
-
-            </div>
-
-            <div class="progress">
-
-              <div
-                class="progress-bar"
-                style="width:${percentage}%"
-              ></div>
-
-            </div>
-
-          `;
-
-          resultsList.appendChild(
-            item
-          );
-
-        }
-      );
-
-      totalVotes.textContent =
-        translations[currentLanguage]
-          .totalVotes +
-        ": " +
-        total;
-
-    }
-
-
-    /* =========================================================
-       VOTE
-    ========================================================= */
-
-    submitVoteBtn.addEventListener(
-      "click",
-      async () => {
-
-        if (!currentPollId) {
-          return;
-        }
-
-        if (
-          selectedOptionIndex === null
-        ) {
-
-          showStatus(
-            "Please select an option first.",
-            "error"
-          );
-
-          return;
-        }
-
-        if (
-          hasVoted(
-            currentPollId
-          )
-        ) {
-
-          showStatus(
-            translations[currentLanguage]
-              .alreadyVoted,
-            "info"
-          );
-
-          return;
-        }
-
-        submitVoteBtn.disabled =
-          true;
-
-        submitVoteBtn.textContent =
-          "Submitting...";
-
-        try {
-
-          const pollRef =
-            doc(
-              db,
-              "polls",
-              currentPollId
-            );
-
-          const selectedIndex =
-            selectedOptionIndex;
-
-          await runTransaction(
-            db,
-            async transaction => {
-
-              const snapshot =
-                await transaction.get(
-                  pollRef
-                );
-
-              if (!snapshot.exists()) {
-
-                throw new Error(
-                  "Poll not found."
-                );
-
-              }
-
-              const data =
-                snapshot.data();
-
-              const counts =
-                Array.isArray(
-                  data.counts
-                )
-                  ? [...data.counts]
-                  : data.options.map(
-                      () => 0
-                    );
-
-              while (
-                counts.length <
-                data.options.length
-              ) {
-
-                counts.push(0);
-
-              }
-
-              counts[selectedIndex] =
-                Number(
-                  counts[selectedIndex] ||
-                  0
-                ) + 1;
-
-              const newTotal =
-                Number(
-                  data.totalVotes ||
-                  0
-                ) + 1;
-
-              transaction.update(
-                pollRef,
-                {
-
-                  counts:
-                    counts,
-
-                  totalVotes:
-                    newTotal
-
-                }
-              );
-
-            }
-          );
-
-          markAsVoted(
-            currentPollId
-          );
-
-          selectedOptionIndex =
-            null;
-
-          showStatus(
-            translations[currentLanguage]
-              .voteSuccess,
-            "success"
-          );
-
-        } catch (error) {
-
-          console.error(
-            "Vote error:",
-            error
-          );
-
-          showStatus(
-            translations[currentLanguage]
-              .error,
-            "error"
-          );
-
-          submitVoteBtn.disabled =
-            false;
-
-          submitVoteBtn.textContent =
-            translations[currentLanguage]
-              .vote;
-
-        }
 
       }
     );
 
 
-    /* =========================================================
-       LOCAL VOTE PROTECTION
-    ========================================================= */
+    renderResults(data);
 
-    function voteStorageKey(
-      pollId
-    ) {
 
-      return (
+    const alreadyVoted =
+      localStorage.getItem(
         "pollspace-voted-" +
-        pollId
+        currentPollId
       );
+
+
+    if (alreadyVoted) {
+
+      voteBtn.disabled = true;
+
+      voteBtn.textContent =
+        "You Already Voted";
+
+
+      resultsArea.classList.remove(
+        "hidden"
+      );
+
+    } else {
+
+      voteBtn.disabled = false;
+
+      voteBtn.textContent =
+        "Vote";
 
     }
 
-
-    function hasVoted(
-      pollId
-    ) {
-
-      return (
-        localStorage.getItem(
-          voteStorageKey(
-            pollId
-          )
-        ) === "true"
-      );
-
-    }
+  }
 
 
-    function markAsVoted(
-      pollId
-    ) {
+  /* =========================================
+     RENDER RESULTS
+  ========================================= */
 
-      localStorage.setItem(
-        voteStorageKey(
-          pollId
-        ),
-        "true"
-      );
+  function renderResults(data) {
 
-    }
+    resultsContainer.innerHTML = "";
 
 
-    /* =========================================================
-       COPY LINK
-    ========================================================= */
+    const total =
+      Number(data.totalVotes || 0);
 
-    async function copyPollLink() {
 
-      const link =
-        window.location.href;
+    data.options.forEach(
+      (option, index) => {
 
-      try {
+        const count =
+          Number(
+            data.counts?.[index] || 0
+          );
 
-        await navigator.clipboard.writeText(
-          link
-        );
 
-        showStatus(
-          translations[currentLanguage]
-            .copied,
-          "success"
-        );
+        const percentage =
+          total > 0
+            ? (count / total) * 100
+            : 0;
 
-      } catch (error) {
 
-        shareLinkInput.select();
+        const row =
+          document.createElement("div");
 
-        document.execCommand(
-          "copy"
-        );
 
-        showStatus(
-          translations[currentLanguage]
-            .copied,
-          "success"
+        row.className =
+          "result-row";
+
+
+        row.innerHTML = `
+
+          <div class="result-top">
+
+            <span>
+              ${escapeHtml(option)}
+            </span>
+
+            <span>
+              ${count}
+              (${percentage.toFixed(1)}%)
+            </span>
+
+          </div>
+
+          <div class="progress">
+
+            <div
+              class="progress-bar"
+              style="width:${percentage}%"
+            ></div>
+
+          </div>
+
+        `;
+
+
+        resultsContainer.appendChild(
+          row
         );
 
       }
-
-    }
-
-
-    document
-      .getElementById("copyLinkBtn")
-      .addEventListener(
-        "click",
-        copyPollLink
-      );
-
-    document
-      .getElementById("copyLinkBtn2")
-      .addEventListener(
-        "click",
-        copyPollLink
-      );
+    );
 
 
-    /* =========================================================
-       WHATSAPP
-    ========================================================= */
+    totalVotes.textContent =
+      total;
 
-    document
-      .getElementById("whatsappBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          const text =
-            encodeURIComponent(
-              (currentPollData?.question ||
-                "Check out this poll!") +
-              "\n\n" +
-              window.location.href
-            );
-
-          window.open(
-            "https://wa.me/?text=" +
-              text,
-            "_blank"
-          );
-
-        }
-      );
+  }
 
 
-    /* =========================================================
-       TELEGRAM
-    ========================================================= */
+  /* =========================================
+     VOTE
+  ========================================= */
 
-    document
-      .getElementById("telegramBtn")
-      .addEventListener(
-        "click",
-        () => {
+  voteBtn.addEventListener(
+    "click",
+    async () => {
 
-          const text =
-            encodeURIComponent(
-              currentPollData?.question ||
-              "Check out this poll!"
-            );
+      if (selectedOption === null) {
 
-          const url =
-            encodeURIComponent(
-              window.location.href
-            );
-
-          window.open(
-            "https://t.me/share/url?url=" +
-              url +
-              "&text=" +
-              text,
-            "_blank"
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       FACEBOOK
-    ========================================================= */
-
-    document
-      .getElementById("facebookBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          const url =
-            encodeURIComponent(
-              window.location.href
-            );
-
-          window.open(
-            "https://www.facebook.com/sharer/sharer.php?u=" +
-              url,
-            "_blank"
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       X / TWITTER
-    ========================================================= */
-
-    document
-      .getElementById("twitterBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          const text =
-            encodeURIComponent(
-              currentPollData?.question ||
-              "Vote in this poll!"
-            );
-
-          const url =
-            encodeURIComponent(
-              window.location.href
-            );
-
-          window.open(
-            "https://twitter.com/intent/tweet?text=" +
-              text +
-              "&url=" +
-              url,
-            "_blank"
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       INSTAGRAM
-    ========================================================= */
-
-    document
-      .getElementById("instagramBtn")
-      .addEventListener(
-        "click",
-        async () => {
-
-          await copyPollLink();
-
-          alert(
-            "Poll link copied. Paste it into Instagram."
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       TIKTOK
-    ========================================================= */
-
-    document
-      .getElementById("tiktokBtn")
-      .addEventListener(
-        "click",
-        async () => {
-
-          await copyPollLink();
-
-          alert(
-            "Poll link copied. Paste it into TikTok."
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       CREATE BUTTON IN HEADER
-    ========================================================= */
-
-    document
-      .getElementById("headerCreateBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          window.history.pushState(
-            {},
-            "",
-            window.location.pathname
-          );
-
-          if (unsubscribePoll) {
-
-            unsubscribePoll();
-
-            unsubscribePoll = null;
-
-          }
-
-          pollSection.classList.add(
-            "hidden"
-          );
-
-          createSection.classList.remove(
-            "hidden"
-          );
-
-          questionInput.focus();
-
-          window.scrollTo({
-            top:
-              createSection.offsetTop - 80,
-            behavior: "smooth"
-          });
-
-        }
-      );
-
-
-    /* =========================================================
-       ESCAPE HTML
-    ========================================================= */
-
-    function escapeHtml(
-      value
-    ) {
-
-      return String(value)
-        .replace(
-          /&/g,
-          "&amp;"
-        )
-        .replace(
-          /</g,
-          "&lt;"
-        )
-        .replace(
-          />/g,
-          "&gt;"
-        )
-        .replace(
-          /"/g,
-          "&quot;"
-        )
-        .replace(
-          /'/g,
-          "&#039;"
+        showStatus(
+          "Please select an option first.",
+          "error"
         );
 
-    }
-
-
-    /* =========================================================
-       MODALS
-    ========================================================= */
-
-    function openModal(
-      id
-    ) {
-
-      document
-        .getElementById(id)
-        .classList.add(
-          "show"
-        );
-
-    }
-
-
-    function closeModal(
-      id
-    ) {
-
-      document
-        .getElementById(id)
-        .classList.remove(
-          "show"
-        );
-
-    }
-
-
-    document
-      .getElementById("privacyBtn")
-      .addEventListener(
-        "click",
-        () =>
-          openModal(
-            "privacyModal"
-          )
-      );
-
-
-    document
-      .getElementById("termsBtn")
-      .addEventListener(
-        "click",
-        () =>
-          openModal(
-            "termsModal"
-          )
-      );
-
-
-    document
-      .getElementById("aboutBtn")
-      .addEventListener(
-        "click",
-        () =>
-          openModal(
-            "aboutModal"
-          )
-      );
-
-
-    document
-      .querySelectorAll(
-        ".close-modal"
-      )
-      .forEach(
-        button => {
-
-          button.addEventListener(
-            "click",
-            () => {
-
-              closeModal(
-                button.dataset.close
-              );
-
-            }
-          );
-
-        }
-      );
-
-
-    document
-      .querySelectorAll(".modal")
-      .forEach(
-        modal => {
-
-          modal.addEventListener(
-            "click",
-            event => {
-
-              if (
-                event.target === modal
-              ) {
-
-                modal.classList.remove(
-                  "show"
-                );
-
-              }
-
-            }
-          );
-
-        }
-      );
-
-
-    /* =========================================================
-       LOAD EXISTING POLL FROM URL
-       
-       Example:
-       https://your-site.com/?poll=ABC123
-    ========================================================= */
-
-    async function loadPollFromUrl() {
-
-      const params =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      const pollId =
-        params.get(
-          "poll"
-        );
-
-      if (!pollId) {
         return;
       }
 
-      currentPollId =
-        pollId;
 
-      createSection.classList.add(
-        "hidden"
-      );
+      if (!currentPollId) {
 
-      pollSection.classList.remove(
-        "hidden"
-      );
+        showStatus(
+          "Poll ID not found.",
+          "error"
+        );
 
-      pollLoading.classList.remove(
-        "hidden"
-      );
+        return;
+      }
 
-      pollContent.classList.add(
-        "hidden"
-      );
+
+      const alreadyVoted =
+        localStorage.getItem(
+          "pollspace-voted-" +
+          currentPollId
+        );
+
+
+      if (alreadyVoted) {
+
+        showStatus(
+          "You have already voted.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      voteBtn.disabled = true;
+
+      voteBtn.textContent =
+        "Submitting Vote...";
+
 
       try {
 
@@ -3130,49 +1526,829 @@
           doc(
             db,
             "polls",
-            pollId
+            currentPollId
           );
 
-        const snapshot =
-          await getDoc(
-            pollRef
-          );
 
-        if (!snapshot.exists()) {
+        await runTransaction(
+          db,
+          async (transaction) => {
 
-          pollLoading.textContent =
-            "This poll does not exist.";
+            const snapshot =
+              await transaction.get(
+                pollRef
+              );
 
-          return;
 
-        }
+            if (!snapshot.exists()) {
 
-        showPoll(
-          pollId
+              throw new Error(
+                "Poll does not exist."
+              );
+
+            }
+
+
+            const data =
+              snapshot.data();
+
+
+            const counts =
+              Array.isArray(data.counts)
+                ? [...data.counts]
+                : data.options.map(
+                    () => 0
+                  );
+
+
+            while (
+              counts.length <
+              data.options.length
+            ) {
+
+              counts.push(0);
+
+            }
+
+
+            counts[selectedOption] =
+              Number(
+                counts[selectedOption] || 0
+              ) + 1;
+
+
+            const newTotal =
+              Number(
+                data.totalVotes || 0
+              ) + 1;
+
+
+            transaction.update(
+              pollRef,
+              {
+
+                counts: counts,
+
+                totalVotes: newTotal
+
+              }
+            );
+
+          }
         );
+
+
+        localStorage.setItem(
+          "pollspace-voted-" +
+          currentPollId,
+          "true"
+        );
+
+
+        resultsArea.classList.remove(
+          "hidden"
+        );
+
+
+        showStatus(
+          "Your vote has been recorded!",
+          "success"
+        );
+
+
+        voteBtn.textContent =
+          "Vote Recorded";
+
 
       } catch (error) {
 
         console.error(
-          "Load poll error:",
+          "VOTE ERROR:",
           error
         );
 
-        pollLoading.textContent =
-          "Unable to load this poll.";
+
+        showStatus(
+          "Vote submit नहीं हुआ: " +
+          error.message,
+          "error"
+        );
+
+
+        voteBtn.disabled = false;
+
+        voteBtn.textContent =
+          "Vote";
 
       }
 
     }
+  );
 
 
-    /* =========================================================
-       START APP
-    ========================================================= */
+  /* =========================================
+     SHARE URL
+  ========================================= */
 
-    loadPollFromUrl();
+  function getShareUrl() {
 
-  </script>
+    return shareUrl.value ||
+      window.location.href;
+
+  }
+
+
+  /* =========================================
+     COPY
+  ========================================= */
+
+  async function copyPollLink() {
+
+    const url =
+      getShareUrl();
+
+
+    try {
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+
+      showStatus(
+        "Poll link copied!",
+        "success"
+      );
+
+
+    } catch (error) {
+
+      shareUrl.select();
+
+      document.execCommand("copy");
+
+
+      showStatus(
+        "Poll link copied!",
+        "success"
+      );
+
+    }
+
+  }
+
+
+  document
+    .getElementById("copyBtn")
+    .addEventListener(
+      "click",
+      copyPollLink
+    );
+
+
+  document
+    .getElementById("copyLinkBtn")
+    .addEventListener(
+      "click",
+      copyPollLink
+    );
+
+
+  /* =========================================
+     WHATSAPP
+  ========================================= */
+
+  document
+    .getElementById("whatsappBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        const text =
+          encodeURIComponent(
+            "Please vote in my poll:\n" +
+            getShareUrl()
+          );
+
+
+        window.open(
+          "https://wa.me/?text=" + text,
+          "_blank"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     TELEGRAM
+  ========================================= */
+
+  document
+    .getElementById("telegramBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        const url =
+          encodeURIComponent(
+            getShareUrl()
+          );
+
+
+        const text =
+          encodeURIComponent(
+            "Please vote in my poll!"
+          );
+
+
+        window.open(
+          "https://t.me/share/url?url=" +
+          url +
+          "&text=" +
+          text,
+          "_blank"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     FACEBOOK
+  ========================================= */
+
+  document
+    .getElementById("facebookBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        const url =
+          encodeURIComponent(
+            getShareUrl()
+          );
+
+
+        window.open(
+          "https://www.facebook.com/sharer/sharer.php?u=" +
+          url,
+          "_blank"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     X / TWITTER
+  ========================================= */
+
+  document
+    .getElementById("xBtn")
+    .addEventListener(
+      "click",
+      () => {
+
+        const url =
+          encodeURIComponent(
+            getShareUrl()
+          );
+
+
+        const text =
+          encodeURIComponent(
+            "Please vote in my poll!"
+          );
+
+
+        window.open(
+          "https://twitter.com/intent/tweet?text=" +
+          text +
+          "&url=" +
+          url,
+          "_blank"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     INSTAGRAM
+  ========================================= */
+
+  document
+    .getElementById("instagramBtn")
+    .addEventListener(
+      "click",
+      async () => {
+
+        await copyPollLink();
+
+
+        window.open(
+          "https://www.instagram.com/",
+          "_blank"
+        );
+
+        showStatus(
+          "Poll link copied. Paste it into Instagram.",
+          "success"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     TIKTOK
+  ========================================= */
+
+  document
+    .getElementById("tiktokBtn")
+    .addEventListener(
+      "click",
+      async () => {
+
+        await copyPollLink();
+
+
+        window.open(
+          "https://www.tiktok.com/",
+          "_blank"
+        );
+
+        showStatus(
+          "Poll link copied. Paste it into TikTok.",
+          "success"
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     CREATE POLL TOP BUTTON
+  ========================================= */
+
+  document
+    .getElementById("createPollTop")
+    .addEventListener(
+      "click",
+      () => {
+
+        createCard.classList.remove(
+          "hidden"
+        );
+
+        pollCard.classList.add(
+          "hidden"
+        );
+
+        questionInput.focus();
+
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+
+      }
+    );
+
+
+  /* =========================================
+     LANGUAGE
+  ========================================= */
+
+  const languageBtn =
+    document.getElementById(
+      "languageBtn"
+    );
+
+
+  const languageMenu =
+    document.getElementById(
+      "languageMenu"
+    );
+
+
+  languageBtn.addEventListener(
+    "click",
+    () => {
+
+      languageMenu.style.display =
+        languageMenu.style.display ===
+        "block"
+          ? "none"
+          : "block";
+
+    }
+  );
+
+
+  const translations = {
+
+    en: {
+
+      title: "Create Your Poll",
+
+      subtitle:
+        "Ask a question, collect votes and share your poll.",
+
+      create:
+        "Create Poll",
+
+      question:
+        "Poll Question",
+
+      questionPlaceholder:
+        "What do you want to ask?",
+
+      options:
+        "Options"
+
+    },
+
+    hi: {
+
+      title: "अपना पोल बनाएं",
+
+      subtitle:
+        "सवाल पूछें, वोट इकट्ठा करें और अपना पोल शेयर करें।",
+
+      create:
+        "पोल बनाएं",
+
+      question:
+        "पोल का सवाल",
+
+      questionPlaceholder:
+        "आप क्या पूछना चाहते हैं?",
+
+      options:
+        "विकल्प"
+
+    },
+
+    pa: {
+
+      title: "ਆਪਣਾ ਪੋਲ ਬਣਾਓ",
+
+      subtitle:
+        "ਸਵਾਲ ਪੁੱਛੋ, ਵੋਟ ਇਕੱਠੀਆਂ ਕਰੋ ਅਤੇ ਆਪਣਾ ਪੋਲ ਸਾਂਝਾ ਕਰੋ।",
+
+      create:
+        "ਪੋਲ ਬਣਾਓ",
+
+      question:
+        "ਪੋਲ ਦਾ ਸਵਾਲ",
+
+      questionPlaceholder:
+        "ਤੁਸੀਂ ਕੀ ਪੁੱਛਣਾ ਚਾਹੁੰਦੇ ਹੋ?",
+
+      options:
+        "ਵਿਕਲਪ"
+
+    },
+
+    es: {
+
+      title: "Crea tu encuesta",
+
+      subtitle:
+        "Haz una pregunta, recibe votos y comparte tu encuesta.",
+
+      create:
+        "Crear encuesta",
+
+      question:
+        "Pregunta",
+
+      questionPlaceholder:
+        "¿Qué quieres preguntar?",
+
+      options:
+        "Opciones"
+
+    },
+
+    fr: {
+
+      title: "Créez votre sondage",
+
+      subtitle:
+        "Posez une question, recueillez des votes et partagez votre sondage.",
+
+      create:
+        "Créer un sondage",
+
+      question:
+        "Question",
+
+      questionPlaceholder:
+        "Que voulez-vous demander ?",
+
+      options:
+        "Options"
+
+    },
+
+    de: {
+
+      title: "Umfrage erstellen",
+
+      subtitle:
+        "Stellen Sie eine Frage, sammeln Sie Stimmen und teilen Sie Ihre Umfrage.",
+
+      create:
+        "Umfrage erstellen",
+
+      question:
+        "Umfragefrage",
+
+      questionPlaceholder:
+        "Was möchten Sie fragen?",
+
+      options:
+        "Optionen"
+
+    }
+
+  };
+
+
+  document
+    .querySelectorAll(
+      "#languageMenu button"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const lang =
+            button.dataset.lang;
+
+
+          const t =
+            translations[lang];
+
+
+          if (!t) return;
+
+
+          document
+            .getElementById(
+              "mainTitle"
+            )
+            .textContent =
+            t.title;
+
+
+          document
+            .getElementById(
+              "mainSubtitle"
+            )
+            .textContent =
+            t.subtitle;
+
+
+          document
+            .getElementById(
+              "createTitle"
+            )
+            .textContent =
+            t.create;
+
+
+          document
+            .getElementById(
+              "questionLabel"
+            )
+            .textContent =
+            t.question;
+
+
+          document
+            .getElementById(
+              "questionInput"
+            )
+            .placeholder =
+            t.questionPlaceholder;
+
+
+          document
+            .getElementById(
+              "optionsLabel"
+            )
+            .textContent =
+            t.options;
+
+
+          languageMenu.style.display =
+            "none";
+
+        }
+      );
+
+    });
+
+
+  /* =========================================
+     MODALS
+  ========================================= */
+
+  const modal =
+    document.getElementById("modal");
+
+
+  const modalTitle =
+    document.getElementById("modalTitle");
+
+
+  const modalText =
+    document.getElementById("modalText");
+
+
+  function openModal(
+    title,
+    text
+  ) {
+
+    modalTitle.textContent =
+      title;
+
+    modalText.innerHTML =
+      text;
+
+    modal.style.display =
+      "flex";
+
+  }
+
+
+  document
+    .getElementById("closeModal")
+    .addEventListener(
+      "click",
+      () => {
+
+        modal.style.display =
+          "none";
+
+      }
+    );
+
+
+  modal.addEventListener(
+    "click",
+    (event) => {
+
+      if (
+        event.target === modal
+      ) {
+
+        modal.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+
+  document
+    .getElementById("privacyLink")
+    .addEventListener(
+      "click",
+      () => {
+
+        openModal(
+          "Privacy Policy",
+          `
+            <p>
+              PollSpace stores poll information and vote counts
+              in Firebase Firestore to provide the poll service.
+            </p>
+            <br>
+            <p>
+              Please do not enter sensitive personal information
+              into poll questions or options.
+            </p>
+          `
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById("termsLink")
+    .addEventListener(
+      "click",
+      () => {
+
+        openModal(
+          "Terms & Conditions",
+          `
+            <p>
+              PollSpace is provided as a polling and sharing service.
+              Users are responsible for the content of the polls
+              they create.
+            </p>
+            <br>
+            <p>
+              Do not use the service for illegal, harmful or abusive content.
+            </p>
+          `
+        );
+
+      }
+    );
+
+
+  document
+    .getElementById("aboutLink")
+    .addEventListener(
+      "click",
+      () => {
+
+        openModal(
+          "About PollSpace",
+          `
+            <p>
+              PollSpace lets anyone create a simple online poll,
+              share it with others and see live results.
+            </p>
+          `
+        );
+
+      }
+    );
+
+
+  /* =========================================
+     ESCAPE HTML
+  ========================================= */
+
+  function escapeHtml(text) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      text;
+
+    return div.innerHTML;
+
+  }
+
+
+  /* =========================================
+     CHECK SHARED POLL ON PAGE LOAD
+  ========================================= */
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const pollId =
+    params.get("poll");
+
+
+  if (pollId) {
+
+    loadPoll(pollId);
+
+  }
+
+
+  /* =========================================
+     FIREBASE ERROR HANDLER
+  ========================================= */
+
+  window.addEventListener(
+    "error",
+    (event) => {
+
+      console.error(
+        "PAGE ERROR:",
+        event.error
+      );
+
+    }
+  );
+
+
+  console.log(
+    "PollSpace Firebase app initialized."
+  );
+
+</script>
 
 </body>
 </html>
