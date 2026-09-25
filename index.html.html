@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pollify - Create & Share Polls</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:Arial,Helvetica,sans-serif;min-height:100vh;color:white;
+  background:radial-gradient(circle at top left,#7c3aed 0%,transparent 35%),
+             radial-gradient(circle at bottom right,#06b6d4 0%,transparent 35%),
+             linear-gradient(135deg,#111827,#1e1b4b);
+}
+header{background:#18b66a;width:100%;padding:18px 7%;display:flex;justify-content:space-between;align-items:center;
+background:#18b66a;backdrop-filter:blur(15px);border-bottom:1px solid rgba(255,255,255,.12);
+position:sticky;top:0;z-index:100}
+.logo{color:#ffffff;text-shadow:0 2px 10px rgba(0,0,0,.22);font-size:32px;font-weight:900;letter-spacing:-.5px;}.logo span{color:#ffffff;font-weight:900;}
+.header-right{display:flex;align-items:center;gap:10px}
+select,input{font:inherit}.language-select select{border:1px solid rgba(255,255,255,.18);outline:none;padding:10px 13px;
+border-radius:25px;background:rgba(255,255,255,.10);color:white;font-size:14px}
+.language-select option{background:#1e1b4b;color:white}
+button{cursor:pointer}.create-top-btn,.primary-btn{border:none;color:white;font-weight:bold;
+background:linear-gradient(135deg,#8b5cf6,#06b6d4);box-shadow:0 10px 30px rgba(99,102,241,.25)}
+.create-top-btn{padding:11px 18px;border-radius:30px}.primary-btn{width:100%;padding:15px;border-radius:14px;margin-top:12px;font-size:16px}
+.secondary-btn{border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.08);color:white;padding:11px 16px;border-radius:12px;margin-top:10px}
+.container{width:92%;max-width:750px;margin:65px auto}.hero{background:linear-gradient(135deg,#2563eb 0%,#4f46e5 48%,#6d4bc1 100%);text-align:center;}
+.hero-icon{width:75px;height:75px;margin:auto auto 20px;display:flex;align-items:center;justify-content:center;
+font-size:35px;border-radius:25px;background:linear-gradient(135deg,#8b5cf6,#06b6d4);box-shadow:0 15px 40px rgba(139,92,246,.35)}
+.hero h1{color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.18);text-align:center;margin-left:auto;margin-right:auto;}.hero h1 span{color:#fff;}.hero p,.subtitle{color:#cbd5e1;line-height:1.6}
+.card{background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(20px);
+border-radius:25px;padding:30px;box-shadow:0 20px 60px rgba(0,0,0,.25);margin-bottom:20px}
+.card h2{font-size:28px;margin-bottom:8px}.subtitle{margin-bottom:25px}
+label{display:block;margin-bottom:8px;font-size:14px;font-weight:bold;color:#e2e8f0}
+input{width:100%;padding:15px 16px;border:1px solid rgba(255,255,255,.15);border-radius:13px;outline:none;
+background:rgba(0,0,0,.20);color:white;font-size:16px;margin-bottom:18px}
+.option-row{display:flex;gap:10px;margin-bottom:10px}.remove-btn{width:48px;border:none;border-radius:12px;background:rgba(239,68,68,.15);color:#fca5a5;font-size:18px}
+.poll-option{display:flex;align-items:center;gap:12px;padding:17px;margin:12px 0;border-radius:15px;
+border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.15);cursor:pointer}
+.poll-option input{width:18px;height:18px;margin:0}.share-box{margin-top:28px;padding:22px;border-radius:20px;
+background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(6,182,212,.10));border:1px solid rgba(255,255,255,.12)}
+.share-title{font-size:20px;font-weight:800;margin-bottom:5px}.share-subtitle{color:#aeb8c9;font-size:14px;margin-bottom:15px}
+.social-buttons{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:12px}
+.social{border:none;padding:13px 10px;border-radius:12px;color:white;font-size:14px;font-weight:700}
+.whatsapp{background:#25D366}.instagram{background:linear-gradient(45deg,#feda75,#d62976,#962fbf,#4f5bd5)}
+.facebook{background:#1877F2}.copy{background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.15)}
+.share-main{grid-column:1/-1;background:linear-gradient(135deg,#18b66a,#22d3ee);font-size:18px;padding:16px;box-shadow:0 8px 24px rgba(24,182,106,.25);cursor:pointer}.share-main:hover{filter:brightness(1.08)}
+.share-now-banner{margin:-5px 0 20px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#18b66a,#22d3ee);box-shadow:0 10px 30px rgba(24,182,106,.25);text-align:center}.share-now-banner strong{display:block;font-size:20px;margin-bottom:6px}.share-now-btn{width:100%;border:2px solid rgba(255,255,255,.35);background:#fff;color:#087443;padding:15px;border-radius:13px;font-size:18px;font-weight:900;cursor:pointer}.share-now-btn:hover{transform:translateY(-1px)}
+.quick-share-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:15px 0 12px}.quick-share{border:0;padding:12px 10px;border-radius:12px;color:#fff;font-size:14px;font-weight:800;cursor:pointer}.quick-share:hover{filter:brightness(1.08);transform:translateY(-1px)}
+@media(max-width:600px){.quick-share-grid{grid-template-columns:1fr}}
+.language-select{background:linear-gradient(135deg,#18b66a,#22d3ee)!important;color:#fff!important;border-color:rgba(255,255,255,.25)!important}
+.result{margin:20px 0}.result-info{display:flex;justify-content:space-between;margin-bottom:8px}
+.result-bar{height:13px;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden}
+.result-fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#8b5cf6,#22d3ee);transition:width .8s}
+.success{margin-top:15px;padding:12px;border-radius:10px;background:rgba(34,197,94,.12);color:#86efac;text-align:center}
+.error{margin-top:15px;padding:12px;border-radius:10px;background:rgba(239,68,68,.12);color:#fca5a5;text-align:center}
+.hidden{display:none}footer{text-align:center;color:#94a3b8;padding:30px 20px 40px;font-size:14px}
+.footer-links{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-bottom:14px}
+.footer-link{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.07);color:#e2e8f0;
+padding:9px 14px;border-radius:20px;font-size:13px;cursor:pointer;transition:.2s}
+.footer-link:hover{background:rgba(255,95,162,.15);border-color:rgba(255,95,162,.4)}
+@media(max-width:600px){header{background:#18b66a;padding:15px 4%}.logo{font-size:22px}.header-right{gap:6px}.hero h1{font-size:34px}.card{padding:22px}.social-buttons{grid-template-columns:1fr}}
+
+/* Advertisement slots - replace these placeholders with your ad-network code later */
+.ad-slot{
+  min-height:90px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:18px auto;
+  padding:10px;
+  box-sizing:border-box;
+  border:1px dashed rgba(0,0,0,.18);
+  border-radius:12px;
+  background:rgba(255,255,255,.72);
+  color:#777;
+  font-size:12px;
+  text-align:center;
+}
+.ad-top,.ad-bottom{max-width:1100px;}
+.side-ad{
+  position:fixed;
+  top:180px;
+  width:150px;
+  min-height:300px;
+  z-index:20;
+}
+.side-ad.left{left:12px;}
+.side-ad.right{right:12px;}
+@media(max-width:1200px){
+  .side-ad{display:none;}
+}
+
+</style>
+</head>
+
+<body>
+<div class="ad-slot ad-top" id="topAd">Top Advertisement</div>
+<div class="side-ad left ad-slot" id="leftAd">Left Advertisement</div>
+<div class="side-ad right ad-slot" id="rightAd">Right Advertisement</div>
+
+<header>
+  <div class="logo">Poll<span>ify</span></div>
+  <div class="header-right">
+    <div class="language-select">
+      <select id="languageSelect" style="background:linear-gradient(135deg,#18b66a,#22d3ee);color:white;border-color:rgba(255,255,255,.25)">
+        <option value="en">🇬🇧 English</option>
+        <option value="pa">🇮🇳 ਪੰਜਾਬੀ</option>
+        <option value="hi">🇮🇳 हिन्दी</option>
+      </select>
+    </div>
+    <button class="create-top-btn" onclick="showCreate()">+ Create Poll</button>
+  </div>
+</header>
+
+<div class="container">
+  <div id="homePage">
+    <div class="hero">
+      <div class="hero-icon">📊</div>
+      <h1>Ask. <span>Vote.</span> Share.</h1>
+      <p>Create beautiful polls and share them with your friends in seconds.</p>
+    </div>
+    <div class="card">
+      <h2>Create your first poll</h2>
+      <p class="subtitle">Ask a question and let people vote.</p>
+      <button class="primary-btn" onclick="showCreate()">🚀 Create New Poll</button>
+    </div>
+  </div>
+
+  <div id="createPage" class="card hidden">
+    <h2>✨ <span id="createTitle">Create Poll</span></h2>
+    <p class="subtitle">Create a question and add your options.</p>
+    <label>Your Question</label>
+    <input id="question" type="text" placeholder="Example: How was this year's wheat crop?">
+    <label>Poll Options</label>
+    <div id="optionsContainer">
+      <div class="option-row"><input class="option-input" placeholder="Option 1"></div>
+      <div class="option-row"><input class="option-input" placeholder="Option 2"></div>
+    </div>
+    <button class="secondary-btn" onclick="addOption()">+ Add Option</button>
+    <button class="primary-btn" onclick="createPoll()">🚀 Create Poll</button>
+    <div id="createMessage"></div>
+  </div>
+
+  <div id="pollPage" class="card hidden">
+    <div class="share-now-banner">
+      <strong>🎉 Poll Created Successfully!</strong>
+      <span>Now share your poll with your friends.</span>
+      <div class="quick-share-grid">
+        <button type="button" class="quick-share whatsapp" onclick="shareWhatsApp()">💬 WhatsApp</button>
+        <button type="button" class="quick-share instagram" onclick="shareInstagram()">📸 Instagram</button>
+        <button type="button" class="quick-share facebook" onclick="shareFacebook()">📘 Facebook</button>
+        <button type="button" class="quick-share copy" onclick="copyLink()">📋 Copy Link</button>
+      </div>
+      <button class="share-now-btn" type="button" onclick="openShareOptions()">📤 SHARE POLL</button>
+    </div>
+    <h2 id="pollQuestion"></h2>
+    <p class="subtitle">Select one option and vote.</p>
+    <div id="pollOptions"></div>
+    <button class="primary-btn" onclick="vote()">🗳️ Submit Vote</button>
+    <div id="voteMessage"></div>
+    <div class="share-box">
+      <div class="share-title">🔗 Share this poll</div>
+      <p class="share-subtitle">Share this poll with your friends</p><div id="pollShareCount" style="margin-bottom:10px;color:#94a3b8">📤 Shares: 0</div>
+      <input id="shareLink" readonly>
+      <div class="social-buttons">
+        <button class="social share-main" onclick="nativeShare()">📤 Share Poll</button>
+        <button class="social whatsapp" onclick="shareWhatsApp()">💬 WhatsApp</button>
+        <button class="social instagram" onclick="shareInstagram()">📸 Instagram</button>
+        <button class="social facebook" onclick="shareFacebook()">📘 Facebook</button>
+        <button class="social copy" onclick="copyLink()">📋 Copy Link</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="resultsPage" class="card hidden">
+    <h2>📊 Poll Results</h2>
+    <p class="subtitle" id="resultQuestion"></p>
+    <div id="results"></div>
+    <div class="share-box">
+      <div class="share-title">🔗 Share This Poll</div>
+      <p class="share-subtitle">Vote submitted! Now share this poll with your friends or group.</p><div id="resultShareCount" style="margin-bottom:10px;color:#94a3b8">📤 Shares: 0</div>
+      <input id="resultShareLink" readonly>
+      <div class="social-buttons">
+        <button class="social share-main" onclick="nativeResultShare()">📤 Share Poll</button>
+        <button class="social whatsapp" onclick="shareResultWhatsApp()">💬 WhatsApp</button>
+        <button class="social instagram" onclick="shareResultInstagram()">📸 Instagram</button>
+        <button class="social facebook" onclick="shareResultFacebook()">📘 Facebook</button>
+        <button class="social copy" onclick="copyResultLink()">📋 Copy Link</button>
+      </div>
+    </div>
+    <button class="primary-btn" onclick="showCreate()">✨ Create Your Own Poll</button>
+  </div>
+</div>
+
+<div class="ad-slot" id="middleAd">Middle Advertisement</div>
+<footer>
+  <div class="footer-links">
+    <button class="footer-link" onclick="openPolicy('terms')">Terms & Conditions</button>
+    <button class="footer-link" onclick="openPolicy('privacy')">Privacy Policy</button>
+    <button class="footer-link" onclick="openPolicy('community')">Community Guidelines</button>
+    <button class="footer-link" onclick="openPolicy('contact')">Contact Us</button>
+  </div>
+  <div>Pollify © 2026 • Create • Vote • Share</div>
+</footer>
+<div class="ad-slot ad-bottom" id="bottomAd">Bottom Advertisement</div>
+
+<div id="policyModal" class="hidden" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);padding:25px;overflow:auto">
+  <div style="max-width:700px;margin:40px auto;background:#17142f;border:1px solid rgba(255,255,255,.15);border-radius:24px;padding:28px;box-shadow:0 25px 70px rgba(0,0,0,.45)">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px">
+      <h2 id="policyTitle">Policy</h2>
+      <button onclick="closePolicy()" style="border:0;background:rgba(255,255,255,.1);color:white;border-radius:10px;padding:9px 13px;font-size:18px;cursor:pointer">×</button>
+    </div>
+    <div id="policyContent" style="color:#cbd5e1;line-height:1.75;font-size:15px"></div>
+  </div>
+</div>
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCRbHdl3NpmaXw-Z1En9uORSgrvDDmXq58",
+  authDomain: "creatpoll.firebaseapp.com",
+  projectId: "creatpoll",
+  storageBucket: "creatpoll.firebasestorage.app",
+  messagingSenderId: "416906338883",
+  appId: "1:416906338883:web:338368ec7c14312dc7eaf6",
+  measurementId: "G-SYC4B7YKPV"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+let currentPollId = null;
+let currentPoll = null;
+
+function hideAll(){
+  ["homePage","createPage","pollPage","resultsPage"].forEach(id =>
+    document.getElementById(id).classList.add("hidden")
+  );
+}
+function showCreate(){ hideAll(); document.getElementById("createPage").classList.remove("hidden"); const floating=document.getElementById("floatingShareBtn"); if(floating) floating.style.display="none"; window.scrollTo(0,0); }
+
+function addOption(){
+  const container=document.getElementById("optionsContainer");
+  const number=container.children.length+1;
+  const row=document.createElement("div");
+  row.className="option-row";
+  row.innerHTML=`<input class="option-input" placeholder="Option ${number}">
+                 <button class="remove-btn" onclick="this.parentElement.remove()">×</button>`;
+  container.appendChild(row);
+}
+
+async function createPoll(){
+  const message=document.getElementById("createMessage");
+  const question=document.getElementById("question").value.trim();
+  const inputs=[...document.querySelectorAll(".option-input")];
+  const options=inputs.map(x=>x.value.trim()).filter(Boolean).map(text=>({text,votes:0}));
+
+  if(!question){message.innerHTML='<div class="error">Please enter your question.</div>';return;}
+  if(options.length<2){message.innerHTML='<div class="error">Please add at least 2 options.</div>';return;}
+
+  try{
+    const ref=await db.collection("polls").add({
+      question, options, totalVotes:0,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    currentPollId=ref.id;
+    currentPoll={id:ref.id,question,options,totalVotes:0};
+    showPoll(currentPoll);
+  }catch(error){
+    console.error(error);
+    message.innerHTML='<div class="error">Could not create poll. Check your Firestore setup/rules.</div>';
+  }
+}
+
+function pollUrl(id){
+  return window.location.origin+window.location.pathname+"?poll="+encodeURIComponent(id);
+}
+
+function showPoll(poll){
+  hideAll();
+  currentPoll=poll;
+  currentPollId=poll.id;
+  document.getElementById("pollPage").classList.remove("hidden");
+  document.getElementById("pollQuestion").innerText=poll.question;
+  const box=document.getElementById("pollOptions");
+  box.innerHTML="";
+  poll.options.forEach((option,index)=>{
+    box.innerHTML += `<label class="poll-option">
+      <input type="radio" name="pollOption" value="${index}">
+      <span>${escapeHtml(option.text)}</span>
+    </label>`;
+  });
+  document.getElementById("shareLink").value=pollUrl(poll.id);
+  document.getElementById("pollShareCount").innerText="📤 Shares: "+(poll.totalShares||0);
+  document.getElementById("voteMessage").innerHTML="";
+  const floating=document.getElementById("floatingShareBtn");
+  if(floating) floating.style.display="block";
+  window.scrollTo(0,0);
+}
+
+async function loadPollFromURL(){
+  const id=new URLSearchParams(window.location.search).get("poll");
+  if(!id)return;
+  try{
+    const snap=await db.collection("polls").doc(id).get();
+    if(!snap.exists){alert("This poll is not available.");return;}
+    const poll=snap.data();
+    poll.id=snap.id;
+    showPoll(poll);
+  }catch(error){
+    console.error(error);
+    alert("Could not load this poll. Check Firestore setup/rules.");
+  }
+}
+
+async function vote(){
+  const selected=document.querySelector('input[name="pollOption"]:checked');
+  if(!selected){document.getElementById("voteMessage").innerHTML='<div class="error">Please select an option.</div>';return;}
+  const index=parseInt(selected.value,10);
+  const message=document.getElementById("voteMessage");
+
+  try{
+    const ref=db.collection("polls").doc(currentPollId);
+    await db.runTransaction(async transaction=>{
+      const snap=await transaction.get(ref);
+      if(!snap.exists) throw new Error("Poll not found");
+      const poll=snap.data();
+      const options=poll.options || [];
+      if(!options[index]) throw new Error("Invalid option");
+      options[index].votes=(options[index].votes||0)+1;
+      transaction.update(ref,{options,totalVotes:(poll.totalVotes||0)+1});
+    });
+
+    const updated=await ref.get();
+    const poll=updated.data(); poll.id=updated.id;
+    message.innerHTML='<div class="success">✓ Your vote has been submitted!</div>';
+    setTimeout(()=>showResults(poll),500);
+  }catch(error){
+    console.error(error);
+    message.innerHTML='<div class="error">Vote could not be submitted. Check Firestore rules.</div>';
+  }
+}
+
+function showResults(poll){
+  hideAll();
+  document.getElementById("resultsPage").classList.remove("hidden");
+  document.getElementById("resultQuestion").innerText=poll.question;
+  const results=document.getElementById("results");
+  results.innerHTML="";
+  (poll.options||[]).forEach(option=>{
+    const percentage=poll.totalVotes>0?Math.round(((option.votes||0)/poll.totalVotes)*100):0;
+    results.innerHTML+=`<div class="result">
+      <div class="result-info"><span>${escapeHtml(option.text)}</span><strong>${percentage}%</strong></div>
+      <div class="result-bar"><div class="result-fill" style="width:${percentage}%"></div></div>
+      <small style="color:#94a3b8">${option.votes||0} vote(s)</small>
+    </div>`;
+  });
+  document.getElementById("resultShareLink").value=pollUrl(poll.id);
+  document.getElementById("resultShareCount").innerText="📤 Shares: "+(poll.totalShares||0);
+  window.scrollTo(0,0);
+}
+
+function showShareStatus(msg){
+  const el=document.getElementById("voteMessage");
+  if(el) el.innerHTML='<div class="success">'+msg+'</div>';
+}
+async function copyText(text){
+  try{
+    if(navigator.clipboard && window.isSecureContext){await navigator.clipboard.writeText(text);return true;}
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand("copy");ta.remove();return ok;
+  }catch(e){return false;}
+}
+async function incrementShare(type){
+  try{
+    if(!db || !currentPollId)return;
+    await db.collection("polls").doc(currentPollId).update({
+      totalShares:firebase.firestore.FieldValue.increment(1),
+      ["shareCounts."+type]:firebase.firestore.FieldValue.increment(1)
+    });
+  }catch(e){console.warn("Share count not saved:",e);}
+}
+function shareUrl(){const el=document.getElementById("shareLink");return el?el.value:""}
+function resultUrl(){return document.getElementById("resultShareLink").value}
+async function copyLink(){const ok=await copyText(shareUrl());showShareStatus(ok?"✓ Poll link copied!":"Please copy the poll link manually.");if(ok)await incrementShare("copy")}
+async function copyResultLink(){const ok=await copyText(resultUrl());showShareStatus(ok?"✓ Poll link copied!":"Please copy the poll link manually.");if(ok)await incrementShare("copy")}
+async function shareWhatsApp(){await incrementShare("whatsapp");window.open("https://wa.me/?text="+encodeURIComponent("🗳️ Vote in my poll!\n\n"+shareUrl()),"_blank","noopener")}
+async function shareFacebook(){await incrementShare("facebook");window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(shareUrl()),"_blank","noopener")}
+async function shareInstagram(){const ok=await copyText(shareUrl());if(ok){await incrementShare("instagram");showShareStatus("✓ Link copied. Paste it in Instagram to share!");setTimeout(()=>window.open("https://www.instagram.com/","_blank","noopener"),300)}}
+function openShareOptions(){
+  const box=document.querySelector('#pollPage .share-box');
+  if(box){
+    box.scrollIntoView({behavior:'smooth',block:'center'});
+    box.style.outline='3px solid rgba(34,211,238,.75)';
+    setTimeout(()=>box.style.outline='',1800);
+  }
+}
+
+async function nativeShare(){
+  const url=shareUrl();
+  if(!url){showShareStatus("Create the poll first, then share it.");return;}
+  if(navigator.share){try{await navigator.share({title:"Vote in my poll",text:"🗳️ Vote in my poll!",url});await incrementShare("native");return}catch(e){if(e.name==="AbortError")return;}}
+  await copyLink();
+}
+async function shareResultWhatsApp(){await incrementShare("whatsapp");window.open("https://wa.me/?text="+encodeURIComponent("🗳️ I just voted in this poll!\n\n"+resultUrl()),"_blank","noopener")}
+async function shareResultFacebook(){await incrementShare("facebook");window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(resultUrl()),"_blank","noopener")}
+async function shareResultInstagram(){const ok=await copyText(resultUrl());if(ok){await incrementShare("instagram");showShareStatus("✓ Link copied. Paste it in Instagram to share!");setTimeout(()=>window.open("https://www.instagram.com/","_blank","noopener"),300)}}
+async function nativeResultShare(){
+  const url=resultUrl();
+  if(navigator.share){try{await navigator.share({title:"Vote in my poll",text:"🗳️ Vote in this poll!",url});await incrementShare("native");return}catch(e){if(e.name==="AbortError")return;}}
+  await copyResultLink();
+}
+
+function escapeHtml(text){const div=document.createElement("div");div.textContent=text;return div.innerHTML}
+
+document.getElementById("languageSelect").addEventListener("change",function(){
+  const lang=this.value;
+  const title=document.getElementById("createTitle");
+  if(lang==="pa")title.innerText="ਪੋਲ ਬਣਾਓ";
+  else if(lang==="hi")title.innerText="पोल बनाएं";
+  else title.innerText="Create Poll";
+});
+
+
+function openPolicy(type){
+  const title=document.getElementById("policyTitle");
+  const content=document.getElementById("policyContent");
+  const data={
+    terms:{
+      title:"Terms & Conditions",
+      html:"<p>Welcome to Pollify. By using this website, you agree to use polls responsibly and not to post unlawful, abusive, misleading, or harmful content.</p><p style='margin-top:12px'>Pollify is provided for creating and sharing polls. We may update these terms as the service develops.</p>"
+    },
+    privacy:{
+      title:"Privacy Policy",
+      html:"<p>Pollify is designed to collect only the information needed to create and operate polls. Poll questions, options, and vote totals may be stored in Firebase so that shared polls work across devices.</p><p style='margin-top:12px'>Do not include passwords, financial information, or other sensitive personal information in a poll.</p>"
+    },
+    community:{
+      title:"Community Guidelines",
+      html:"<p>Please keep polls respectful and suitable for the people you share them with. Do not use Pollify for harassment, threats, illegal content, spam, or content that violates applicable laws.</p>"
+    },
+    contact:{
+      title:"Contact Us",
+      html:"<p>For questions, feedback, or reports about a poll, please add your support email or contact details here when you are ready.</p>"
+    }
+  };
+  const item=data[type]||data.terms;
+  title.innerText=item.title;
+  content.innerHTML=item.html;
+  document.getElementById("policyModal").classList.remove("hidden");
+}
+function closePolicy(){
+  document.getElementById("policyModal").classList.add("hidden");
+}
+document.getElementById("policyModal").addEventListener("click",function(e){
+  if(e.target===this) closePolicy();
+});
+
+loadPollFromURL();
+</script>
+</body>
+</html>
